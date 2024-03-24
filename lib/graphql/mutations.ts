@@ -8,3 +8,12 @@ export const CREATE_USER = gql`
     }
   }
 `;
+
+export const VERIFY_USER_TOKEN = gql`
+  mutation VerifyUserToken($token: String!) {
+    verifyUserToken(token: $token) {
+      uid
+      email
+    }
+  }
+`;

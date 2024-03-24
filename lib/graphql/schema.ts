@@ -7,6 +7,9 @@ export const typeDefs = gql`
   type Mutation {
     createUser(email: String!, password: String!): User!
   }
+  type Mutation {
+    verifyUserToken(token: String!): User
+  }
   type User {
     uid: String!
     email: String!

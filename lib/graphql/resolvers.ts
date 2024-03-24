@@ -25,5 +25,34 @@ export const resolvers = {
         throw new Error(error.message);
       }
     },
+    verifyUserToken: async (_: any, { token }: { token: string }) => {
+      try {
+        const decodedToken = await admin.auth().verifyIdToken(token);
+        const uid = decodedToken.uid;
+
+        const userDoc = await admin
+          .firestore()
+          .collection('users')
+          .doc(uid)
+          .get();
+
+        if (!userDoc.exists) {
+          throw new Error('User does not exist');
+        }
+
+        if (!userDoc?.data()?.isAdmin) {
+          throw new Error('You need to be Admin to access the dashboard');
+        }
+
+        const authUser = await admin.auth().getUser(uid);
+
+        return {
+          uid: authUser.uid,
+          email: authUser.email,
+        };
+      } catch (error: any) {
+        throw new Error(error.message);
+      }
+    },
   },
 };

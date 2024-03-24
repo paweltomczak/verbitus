@@ -4,7 +4,7 @@ import { CREATE_USER } from '@/lib/graphql/mutations';
 import Message from '@/components/Message';
 import { useMessage } from '@/context/MessageContext';
 
-const SignInPage = () => {
+const SignInForm = ({ onSwitchForm }: { onSwitchForm: () => void }) => {
   const { setMessage } = useMessage();
   const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
 
@@ -27,7 +27,7 @@ const SignInPage = () => {
       <div className='max-w-md w-full space-y-8'>
         <div>
           <h2 className='mt-6 text-center text-3xl font-bold font-poppins text-gray-900'>
-            Log In into your account
+            Create a new account
           </h2>
         </div>
         <form onSubmit={handleSubmit} className='w-full max-w-md'>
@@ -61,22 +61,22 @@ const SignInPage = () => {
               {loading && (
                 <div className='border-t-transparent animate-spin rounded-full border-4 border-opacity-50 h-5 w-5 mr-2'></div>
               )}
-              {!loading && `Log In`}
+              {!loading && `Sign In`}
             </button>
           </div>
         </form>
         {(error || data) && <Message />}
         <div>
-          <Link
-            href={'/signup'}
+          <button
+            onClick={onSwitchForm}
             className='font-medium text-indigo-600 hover:text-indigo-500'
           >
-            Doesn't have an account? Sign up
-          </Link>
+            Already have an account? Log In
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default SignInPage;
+export default SignInForm;

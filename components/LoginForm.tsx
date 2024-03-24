@@ -1,24 +1,41 @@
-import Link from 'next/link';
 import { useMutation } from '@apollo/client';
-import { CREATE_USER } from '@/lib/graphql/mutations';
+import { VERIFY_USER_TOKEN } from '@/lib/graphql/mutations';
 import Message from '@/components/Message';
 import { useMessage } from '@/context/MessageContext';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/lib/firebase/config';
+import { useState } from 'react';
 
-const SignInPage = () => {
-  const { setMessage } = useMessage();
-  const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
+const LogInForm = ({ onSwitchForm }: { onSwitchForm: () => void }) => {
+  const [loading, setLoading] = useState(false);
+  const { message, setMessage } = useMessage();
+  const [verifyUserToken, { data, loading: tokenLoading, error }] =
+    useMutation(VERIFY_USER_TOKEN);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const email = event.currentTarget.email.value;
     const password = event.currentTarget.password.value;
-
+    setLoading(true);
     try {
-      await createUser({ variables: { email, password } });
-      setMessage('User created successfully', 'success');
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const token = await userCredential.user.getIdToken();
+
+      verifyUserToken({ variables: { token } })
+        .then(() => {
+          setMessage('Successfully logged in!', 'success');
+        })
+        .catch((error: string | any) => {
+          setMessage(error.message);
+        })
+        .finally(() => setLoading(false));
     } catch (error: string | any) {
-      setMessage(error.message);
+      setMessage('Invalid login credentials.');
+      setLoading(false);
     }
   };
 
@@ -27,10 +44,10 @@ const SignInPage = () => {
       <div className='max-w-md w-full space-y-8'>
         <div>
           <h2 className='mt-6 text-center text-3xl font-bold font-poppins text-gray-900'>
-            Create a new account
+            Log In into your account
           </h2>
         </div>
-        <form onSubmit={handleSubmit} className='w-full max-w-md'>
+        <form onSubmit={handleLogin} className='w-full max-w-md'>
           <div className='mb-4'>
             <input
               name='email'
@@ -61,22 +78,22 @@ const SignInPage = () => {
               {loading && (
                 <div className='border-t-transparent animate-spin rounded-full border-4 border-opacity-50 h-5 w-5 mr-2'></div>
               )}
-              {!loading && `Sign In`}
+              {!loading && `Log In`}
             </button>
           </div>
         </form>
-        {(error || data) && <Message />}
+        {(error || data || message) && <Message />}
         <div>
-          <Link
-            href={'/login'}
+          <button
+            onClick={onSwitchForm}
             className='font-medium text-indigo-600 hover:text-indigo-500'
           >
-            Already have an account? Log In
-          </Link>
+            Doesn't have an account? Sign up
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default SignInPage;
+export default LogInForm;
