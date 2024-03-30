@@ -10,6 +10,7 @@ if (!admin.apps.length) {
         '\n'
       ),
     }),
+    databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
   });
 }
 

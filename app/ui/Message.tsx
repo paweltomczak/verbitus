@@ -1,9 +1,10 @@
-import React from 'react';
-import { useMessage } from '../context/MessageContext';
-
-const Message = () => {
-  const { message, type } = useMessage();
-
+const Message = ({
+  message,
+  type,
+}: {
+  message: string;
+  type: 'error' | 'success';
+}) => {
   const backgroundColorClass = type === 'error' ? 'bg-red-500' : 'bg-green-200';
   const textColorClass = type === 'error' ? 'text-white' : 'text-black';
 
