@@ -48,7 +48,7 @@ export default function SignInForm() {
             href='/signup'
             className='font-medium text-indigo-600 hover:text-indigo-500'
           >
-            Doesn't have an account? Sign Up
+            Doesn&apos;t have an account? Sign Up
           </Link>
         </div>
         {message.message && (

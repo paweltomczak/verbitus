@@ -11,7 +11,7 @@ export default function Button({ children, className, ...rest }: ButtonProps) {
     <button
       {...rest}
       type='submit'
-      className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline flex items-center justify-center transition duration-150 ease-in-out ${
+      className={`w-full bg-primary hover:bg-hover text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline flex items-center justify-center transition duration-150 ease-in-out ${
         pending && `disabled:opacity-30`
       }`}
       disabled={pending}
