@@ -46,7 +46,7 @@ export default function SideNav() {
       <div
         className={`bg-primary ${
           expanded ? 'w-64' : 'w-16'
-        } p-5 pt-8 relative duration-300 h-screen flex-col justify-between md:block hidden`}
+        } p-5 pt-8 relative duration-100 h-screen flex-col justify-between md:block hidden`}
       >
         <div>
           <button
