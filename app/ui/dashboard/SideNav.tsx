@@ -15,11 +15,15 @@ import Link from 'next/link';
 import { signOut } from '@/app/lib/actions';
 
 const navigation = [
-  { name: 'Dashboard', icon: HomeIcon, href: '#' },
-  { name: 'All Posts', icon: DocumentTextIcon, href: '#' },
-  { name: 'Create Post', icon: PencilIcon, href: '#' },
-  { name: 'Add Category', icon: FolderPlusIcon, href: '#' },
-  { name: 'Add Tags', icon: TagIcon, href: '#' },
+  { name: 'Dashboard', icon: HomeIcon, href: '/dashboard' },
+  { name: 'All Posts', icon: DocumentTextIcon, href: '/dashboard/posts' },
+  { name: 'Create Post', icon: PencilIcon, href: '/dashboard/posts/create' },
+  {
+    name: 'Add Category',
+    icon: FolderPlusIcon,
+    href: '/dashboard/categories/create',
+  },
+  { name: 'Add Tags', icon: TagIcon, href: '/dashboard/tags/create' },
 ];
 
 export default function SideNav() {
@@ -29,13 +33,14 @@ export default function SideNav() {
     <div className='flex flex-col md:flex-row'>
       <div className='bg-primary md:hidden p-4 flex justify-around w-full'>
         {navigation.map((item, index) => (
-          <button
+          <Link
+            href={item.href}
             key={index}
             className='flex items-center justify-center'
             aria-label={item.name}
           >
             <item.icon className='h-6 w-6 text-white' />
-          </button>
+          </Link>
         ))}
         <button
           onClick={async () => await signOut()}

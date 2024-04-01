@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation';
 import { getUser } from '../lib/actions';
-import SideNav from '../ui/dashboard/SideNav';
 
 export default async function Page() {
   const user = await getUser();
@@ -8,13 +7,15 @@ export default async function Page() {
   if (!user) redirect('/signin');
 
   return (
-    <div className='flex flex-col md:flex-row'>
-      <SideNav />
-      <div className='flex-grow p-10'>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio ut
-        cum illo earum autem veritatis eius repellat, expedita quia fuga non
-        enim sunt quidem id accusamus laudantium, voluptatem vel labore?
-      </div>
+    <div>
+      <h2 className='text-2xl font-semibold mb-4'>
+        Welcome Back,
+        <br />
+        {user.email}
+      </h2>
+      <p className='text-gray-700 mb-4'>
+        As an admin, you have full access to manage the platform.
+      </p>
     </div>
   );
 }
