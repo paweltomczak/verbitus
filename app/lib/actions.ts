@@ -107,7 +107,7 @@ export async function SignInUser(
         };
     }
   }
-  revalidatePath('/login');
+  revalidatePath('/signin');
   redirect('/dashboard');
 }
 
@@ -155,5 +155,32 @@ export async function getUser() {
     };
   } catch (error) {
     return null;
+  }
+}
+
+export async function signOut() {
+  try {
+    const sessionCookie = cookies().get('session')?.value;
+    if (!sessionCookie) return null;
+
+    await admin.auth().verifySessionCookie(sessionCookie, true);
+
+    cookies().set({
+      name: 'session',
+      value: '',
+      maxAge: 0,
+      httpOnly: true,
+      secure: true,
+    });
+
+    auth.signOut();
+
+    revalidatePath('/signin');
+    redirect('/signin');
+  } catch (error: any) {
+    return {
+      message: error.message,
+      type: 'error',
+    };
   }
 }

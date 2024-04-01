@@ -12,6 +12,7 @@ import {
   ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { signOut } from '@/app/lib/actions';
 
 const navigation = [
   { name: 'Dashboard', icon: HomeIcon, href: '#' },
@@ -36,7 +37,10 @@ export default function SideNav() {
             <item.icon className='h-6 w-6 text-white' />
           </button>
         ))}
-        <button className='flex items-center justify-center'>
+        <button
+          onClick={async () => await signOut()}
+          className='flex items-center justify-center'
+        >
           <ArrowLeftEndOnRectangleIcon
             className='h-6 w-6 text-white'
             aria-label='Sign Out'
@@ -87,6 +91,7 @@ export default function SideNav() {
             ))}
             <Link
               href='#'
+              onClick={async () => await signOut()}
               className={`flex items-center ${
                 expanded ? 'justify-start' : 'justify-center'
               } text-white cursor-pointer hover:text-hover`}
