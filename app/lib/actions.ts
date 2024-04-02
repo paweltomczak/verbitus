@@ -1,11 +1,12 @@
 'use server';
 
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/app/lib/firebase/config';
+import { auth, storage } from '@/app/lib/firebase/config';
 import admin from '@/app/lib/firebase/admin';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { uploadBytesResumable, getDownloadURL, ref } from 'firebase/storage';
 
 export async function SignUpUser(
   state: { message: any; type: string } | undefined,
@@ -67,6 +68,7 @@ export async function SignInUser(
       password
     );
     const token = await userCredential.user.getIdToken();
+    const userId = userCredential.user.uid;
 
     const verificationResult = await verifyUserToken({ token });
 
@@ -83,6 +85,8 @@ export async function SignInUser(
         secure: true,
         SameSite: 'Strict',
       };
+
+      await admin.auth().setCustomUserClaims(userId, { isAdmin: true });
 
       cookies().set(options);
     }
@@ -191,17 +195,26 @@ export async function createPost(
 ): Promise<{ message: any; type: string }> {
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;
+  const file = formData.get('image') as File | null;
 
-  if (title === '' || content === '')
+  if (title === '' || content === '' || !file) {
     return {
       message: 'Please fill in all fields',
       type: 'error',
     };
+  }
 
   try {
+    let imageURL = '';
+
+    if (file instanceof File) {
+      imageURL = await uploadImageToStorage(file);
+    }
+
     await admin.firestore().collection('posts').add({
       title,
       content,
+      imageURL,
       createdAt: new Date().toISOString(),
     });
 
@@ -209,10 +222,19 @@ export async function createPost(
       message: 'Post created successfully',
       type: 'success',
     };
-  } catch (error: any) {
+  } catch (error) {
+    console.error('Error creating post:', error);
     return {
-      message: error.message,
+      message: error instanceof Error ? error.message : 'An error occurred',
       type: 'error',
     };
   }
+}
+
+async function uploadImageToStorage(file: File): Promise<string> {
+  const filePath = `posts/${new Date().toISOString()}-${file.name}`;
+  const newImageRef = ref(storage, filePath);
+
+  const uploadTaskSnapshot = await uploadBytesResumable(newImageRef, file);
+  return await getDownloadURL(uploadTaskSnapshot.ref);
 }
