@@ -184,3 +184,35 @@ export async function signOut() {
     };
   }
 }
+
+export async function createPost(
+  state: { message: any; type: string } | undefined,
+  formData: FormData
+): Promise<{ message: any; type: string }> {
+  const title = formData.get('title') as string;
+  const content = formData.get('content') as string;
+
+  if (title === '' || content === '')
+    return {
+      message: 'Please fill in all fields',
+      type: 'error',
+    };
+
+  try {
+    await admin.firestore().collection('posts').add({
+      title,
+      content,
+      createdAt: new Date().toISOString(),
+    });
+
+    return {
+      message: 'Post created successfully',
+      type: 'success',
+    };
+  } catch (error: any) {
+    return {
+      message: error.message,
+      type: 'error',
+    };
+  }
+}

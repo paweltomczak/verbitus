@@ -1,7 +1,5 @@
+import CreatePostForm from '@/app/ui/CreatePostForm';
+
 export default function Page() {
-  return (
-    <div>
-      <h1>Create Post</h1>
-    </div>
-  );
+  return <CreatePostForm />;
 }
