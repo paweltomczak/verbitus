@@ -1,12 +1,26 @@
 'use server';
 
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, storage } from '@/app/lib/firebase/config';
+import { auth, storage, db } from '@/app/lib/firebase/config';
 import admin from '@/app/lib/firebase/admin';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { uploadBytesResumable, getDownloadURL, ref } from 'firebase/storage';
+import {
+  uploadBytesResumable,
+  getDownloadURL,
+  ref,
+  deleteObject,
+} from 'firebase/storage';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+} from 'firebase/firestore';
+import { Post } from './interfaces';
 
 export async function SignUpUser(
   state: { message: any; type: string } | undefined,
@@ -83,7 +97,6 @@ export async function SignInUser(
         maxAge: expiresIn,
         httpOnly: true,
         secure: true,
-        SameSite: 'Strict',
       };
 
       await admin.auth().setCustomUserClaims(userId, { isAdmin: true });
@@ -195,9 +208,9 @@ export async function createPost(
 ): Promise<{ message: any; type: string }> {
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;
-  const file = formData.get('image') as File | null;
+  const file = formData.get('image');
 
-  if (title === '' || content === '' || !file) {
+  if (title === '' || content === '' || file === null) {
     return {
       message: 'Please fill in all fields',
       type: 'error',
@@ -218,6 +231,8 @@ export async function createPost(
       createdAt: new Date().toISOString(),
     });
 
+    revalidatePath('/dashboard/posts');
+
     return {
       message: 'Post created successfully',
       type: 'success',
@@ -237,4 +252,53 @@ async function uploadImageToStorage(file: File): Promise<string> {
 
   const uploadTaskSnapshot = await uploadBytesResumable(newImageRef, file);
   return await getDownloadURL(uploadTaskSnapshot.ref);
+}
+
+export async function fetchPosts(): Promise<Post[]> {
+  const postsCollectionRef = collection(db, 'posts');
+  const q = query(postsCollectionRef);
+  const querySnapshot = await getDocs(q);
+  const posts: Post[] = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    title: doc.data().title,
+    content: doc.data().content,
+    imageURL: doc.data().imageURL,
+    createdAt: doc.data().createdAt,
+  }));
+
+  return posts;
+}
+
+export async function deletePost(postId: string) {
+  try {
+    const postDocRef = doc(db, 'posts', postId);
+    const postDoc = await getDoc(postDocRef);
+
+    if (!postDoc.exists()) {
+      return { message: 'Post not found', type: 'error' };
+    }
+
+    const post = postDoc.data();
+    const imageURL = post.imageURL;
+
+    if (imageURL) {
+      const decodedPath = decodeURIComponent(new URL(imageURL).pathname);
+      const storagePath = `${decodedPath.split('/o/')[1]}`;
+      const imageRef = ref(storage, storagePath);
+      await deleteObject(imageRef);
+    }
+
+    await deleteDoc(postDocRef);
+
+    revalidatePath('/dashboard/posts');
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    return {
+      message:
+        error instanceof Error
+          ? error.message
+          : 'An error occurred during post deletion',
+      type: 'error',
+    };
+  }
 }
