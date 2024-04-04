@@ -1,17 +1,21 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import ReactQuill from 'react-quill';
+import { useState, useRef, useMemo } from 'react';
 import 'react-quill/dist/quill.snow.css';
-import Button from './Button';
-import { createPost } from '../lib/actions';
-import Message from './Message';
+import Button from '../../Button';
+import { createPost } from '../../../lib/actions';
+import Message from '../../Message';
 import { useFormState } from 'react-dom';
+import dynamic from 'next/dynamic';
 
 export default function CreatePostForm() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const fileInputRef = useRef(null);
+  const ReactQuill = useMemo(
+    () => dynamic(() => import('react-quill'), { ssr: false }),
+    []
+  );
 
   const setContentHandler = (value: string) => {
     setContent(value);

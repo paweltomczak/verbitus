@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import ReactQuill from 'react-quill';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import Button from '@/app/ui/Button';
 import { updatePost } from '@/app/lib/actions';
@@ -9,12 +8,18 @@ import Message from '@/app/ui/Message';
 import { useFormState } from 'react-dom';
 import { Post } from '@/app/lib/interfaces';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 
 export default function EditPostForm({ post }: { post: Post }) {
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
   const fileInputRef = useRef(null);
+
+  const ReactQuill = useMemo(
+    () => dynamic(() => import('react-quill'), { ssr: false }),
+    []
+  );
 
   useEffect(() => {
     setContent(post.content);
