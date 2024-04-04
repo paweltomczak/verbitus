@@ -46,8 +46,8 @@ export default function EditPostForm({ post }: { post: Post }) {
     return { message: result.message, type: result.type };
   }
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
     if (file) {
       const url = URL.createObjectURL(file);
       setImagePreviewUrl(url);
