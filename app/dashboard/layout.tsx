@@ -1,5 +1,3 @@
-import { redirect } from 'next/navigation';
-import { getUser } from '@/app/lib/actions';
 import SideNav from '@/app/ui/dashboard/SideNav';
 
 export default async function Layout({
@@ -7,10 +5,6 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getUser();
-
-  if (!user) redirect('/signin');
-
   return (
     <div className='flex flex-col md:flex-row'>
       <SideNav />

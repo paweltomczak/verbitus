@@ -1,18 +1,9 @@
-import { fetchPosts } from '@/app/lib/actions';
-import { DeletePost, EditPost } from '@/app/ui/dashboard/posts/buttons';
+import { fetchPosts } from '@/app/lib/data';
+import { DeletePost, EditPost } from '@/app/ui/dashboard/buttons';
 import Image from 'next/image';
 
 export default async function Page() {
   const posts = await fetchPosts();
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return `${date.getDate().toString().padStart(2, '0')}.${(
-      date.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, '0')}.${date.getFullYear()}`;
-  };
 
   return (
     <div className='flex flex-col divide-y divide-gray-200'>
@@ -28,11 +19,11 @@ export default async function Page() {
               : post.content}
           </div>
           <div className='flex-1 p-2 text-sm text-center'>
-            {formatDate(post.createdAt)}
+            {post.created_at.toLocaleDateString()}
           </div>
           <div className='flex-1 p-2 flex justify-center items-center'>
             <Image
-              src={post.imageURL}
+              src={post.image_url}
               alt='Post image'
               width={64}
               height={64}
