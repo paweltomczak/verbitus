@@ -7,9 +7,7 @@ import Message from './Message';
 import Link from 'next/link';
 
 export default function SignInForm() {
-  const initialState = { message: '', type: '' };
-
-  const [message, dispatch] = useFormState(SignInUser, initialState);
+  const [message, dispatch] = useFormState(SignInUser, undefined);
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
@@ -51,7 +49,7 @@ export default function SignInForm() {
             Doesn&apos;t have an account? Sign Up
           </Link>
         </div>
-        {message.message && (
+        {message?.message && (
           <Message
             message={message.message}
             type={message.type as 'success' | 'error'}

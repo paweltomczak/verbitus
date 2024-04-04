@@ -7,8 +7,7 @@ import { useFormState } from 'react-dom';
 import { SignUpUser } from '@/app/lib/actions';
 
 export default function SignUpForm() {
-  const initialState = { message: '', type: '' };
-  const [message, dispatch] = useFormState(SignUpUser, initialState);
+  const [message, dispatch] = useFormState(SignUpUser, undefined);
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
@@ -50,7 +49,7 @@ export default function SignUpForm() {
             Already have an account? Sign In
           </Link>
         </div>
-        {message.message && (
+        {message?.message && (
           <Message
             message={message.message}
             type={message.type as 'success' | 'error'}

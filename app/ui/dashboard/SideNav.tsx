@@ -12,7 +12,7 @@ import {
   ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { signOut } from '@/app/lib/actions';
+import { SignOutUser } from '@/app/lib/actions';
 
 const navigation = [
   { name: 'Dashboard', icon: HomeIcon, href: '/dashboard' },
@@ -42,15 +42,14 @@ export default function SideNav() {
             <item.icon className='h-6 w-6 text-white' />
           </Link>
         ))}
-        <button
-          onClick={async () => await signOut()}
-          className='flex items-center justify-center'
-        >
-          <ArrowLeftEndOnRectangleIcon
-            className='h-6 w-6 text-white'
-            aria-label='Sign Out'
-          />
-        </button>
+        <form action={SignOutUser}>
+          <button type='submit' className='flex items-center justify-center'>
+            <ArrowLeftEndOnRectangleIcon
+              className='h-6 w-6 text-white'
+              aria-label='Sign Out'
+            />
+          </button>
+        </form>
       </div>
       <div
         className={`bg-primary ${
@@ -58,8 +57,8 @@ export default function SideNav() {
         } p-5 pt-8 relative duration-100 h-screen flex-col justify-between md:block hidden`}
       >
         <div>
-          <button
-            className='absolute -right-5 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1'
+          <a
+            className='absolute -right-5 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 cursor-pointer pt-4'
             style={{
               height: '50px',
               width: '30px',
@@ -71,7 +70,7 @@ export default function SideNav() {
             ) : (
               <ChevronRightIcon className='h-4 w-4 text-gray-800 hover:text-hover' />
             )}
-          </button>
+          </a>
 
           <div className='mt-5 space-y-6'>
             {navigation.map((item) => (
@@ -94,24 +93,26 @@ export default function SideNav() {
                 )}
               </Link>
             ))}
-            <Link
-              href='#'
-              onClick={async () => await signOut()}
-              className={`flex items-center ${
-                expanded ? 'justify-start' : 'justify-center'
-              } text-white cursor-pointer hover:text-hover`}
-            >
-              <div className='flex items-center justify-center w-12'>
-                <ArrowLeftEndOnRectangleIcon className='h-6 w-6' />
+            <form action={SignOutUser}>
+              <div
+                className={`flex items-center ${
+                  expanded ? 'justify-start' : 'justify-center'
+                } text-white cursor-pointer hover:text-hover`}
+              >
+                <button type='submit' className='flex'>
+                  <div className='flex items-center justify-center w-12'>
+                    <ArrowLeftEndOnRectangleIcon className='h-6 w-6' />
+                  </div>
+                  {expanded && (
+                    <div className='flex-1 overflow-hidden max-w-xs'>
+                      <span className='whitespace-nowrap opacity-100'>
+                        Sign Out
+                      </span>
+                    </div>
+                  )}
+                </button>
               </div>
-              {expanded && (
-                <div className='flex-1 overflow-hidden max-w-xs'>
-                  <span className='whitespace-nowrap opacity-100'>
-                    Sign Out
-                  </span>
-                </div>
-              )}
-            </Link>
+            </form>
           </div>
         </div>
       </div>
