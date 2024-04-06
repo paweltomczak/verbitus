@@ -1,9 +1,7 @@
 'use server';
 
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { Post } from './interfaces';
 import { sql } from '@vercel/postgres';
 import bcryptjs from 'bcryptjs';
 import { AuthError } from 'next-auth';
@@ -94,6 +92,20 @@ export async function createPost(
   const content = formData.get('content') as string;
   const file = formData.get('image') as File;
 
+  if (!file?.type.startsWith('image/')) {
+    return {
+      message: 'Please select an image file',
+      type: 'error',
+    };
+  }
+
+  if (title === '' || content === '' || file.size === 0) {
+    return {
+      message: 'Please fill in all fields',
+      type: 'error',
+    };
+  }
+
   try {
     const blob = await put(file.name, file, {
       token: process.env.BLOB_READ_WRITE_TOKEN,
@@ -128,12 +140,27 @@ export async function updatePost(
 ) {
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;
+  const file = formData.get('image') as File | null;
+
   let imageUrl: string | undefined;
   let query;
   let parameters;
 
+  if (!file?.type.startsWith('image/')) {
+    return {
+      message: 'Please select an image file',
+      type: 'error',
+    };
+  }
+
+  if (title === '' || content === '') {
+    return {
+      message: 'Please fill in all fields',
+      type: 'error',
+    };
+  }
+
   try {
-    const file = formData.get('image') as File | null;
     if (file && file.size > 0) {
       const blob = await put(file.name, file, {
         token: process.env.BLOB_READ_WRITE_TOKEN,
