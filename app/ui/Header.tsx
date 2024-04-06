@@ -13,7 +13,7 @@ const Header = () => {
   const [isActive, setIsActive] = useState('Category 1');
 
   return (
-    <header className='bg-white my-3 pb-3'>
+    <header className=' my-3 pb-3'>
       <div className='max-w-6xl mx-auto px-4'>
         <div className='flex justify-between items-center py-3'>
           <div className='lg:hidden flex-1'>
