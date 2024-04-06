@@ -64,7 +64,7 @@ export default function SideNav() {
             style={{
               height: '50px',
               width: '30px',
-            }} // Inline style for precise positioning
+            }}
             onClick={() => setExpanded(!expanded)}
           >
             {expanded ? (
