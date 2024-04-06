@@ -13,6 +13,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { SignOutUser } from '@/app/lib/actions';
+import { usePathname } from 'next/navigation';
 
 const navigation = [
   { name: 'Dashboard', icon: HomeIcon, href: '/dashboard' },
@@ -28,6 +29,7 @@ const navigation = [
 
 export default function SideNav() {
   const [expanded, setExpanded] = useState(true);
+  const pathname = usePathname();
 
   return (
     <div className='flex flex-col md:flex-row'>
@@ -58,7 +60,7 @@ export default function SideNav() {
       >
         <div>
           <a
-            className='absolute -right-5 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 cursor-pointer pt-4'
+            className='absolute -right-5 top-1/2 transform -translate-y-1/2 bg-body rounded-full p-1 cursor-pointer pt-4'
             style={{
               height: '50px',
               width: '30px',
@@ -79,7 +81,9 @@ export default function SideNav() {
                 key={item.name}
                 className={`flex items-center ${
                   expanded ? 'justify-start' : 'justify-center'
-                } text-white cursor-pointer hover:text-hover`}
+                }  cursor-pointer hover:text-hover ${
+                  pathname === item.href ? 'text-hover' : 'text-white'
+                }`}
               >
                 <div className='flex items-center justify-center w-12'>
                   <item.icon className='h-6 w-6' />
