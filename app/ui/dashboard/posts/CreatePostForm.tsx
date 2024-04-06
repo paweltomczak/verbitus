@@ -1,21 +1,18 @@
 'use client';
 
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import Button from '../../Button';
 import { createPost } from '../../../lib/actions';
 import Message from '../../Message';
 import { useFormState } from 'react-dom';
-import dynamic from 'next/dynamic';
+import ImageUload from './ImageUpload';
+import Editor from './Editor';
 
 export default function CreatePostForm() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const fileInputRef = useRef(null);
-  const ReactQuill = useMemo(
-    () => dynamic(() => import('react-quill'), { ssr: false }),
-    []
-  );
 
   const setContentHandler = (value: string) => {
     setContent(value);
@@ -58,13 +55,8 @@ export default function CreatePostForm() {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
-      <ReactQuill theme='snow' value={content} onChange={setContentHandler} />
-      <input
-        type='file'
-        name='image'
-        ref={fileInputRef}
-        className='px-4 py-2 w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'
-      />
+      <Editor setContentHandler={setContentHandler} content={content} />
+      <ImageUload fileInputRef={fileInputRef} />
       <Button type='submit'>Publish</Button>
       {state.message && (
         <Message
