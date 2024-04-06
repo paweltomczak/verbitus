@@ -8,7 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={`${dm_sans.className}`}>{children}</body>
+      <body className={`${dm_sans.className} bg-body`}>{children}</body>
     </html>
   );
 }
