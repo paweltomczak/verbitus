@@ -91,6 +91,8 @@ export async function createPost(
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;
   const file = formData.get('image') as File;
+  const tagsString = formData.get('tags') as string;
+  const tags = JSON.parse(tagsString) as string[];
 
   if (!file?.type.startsWith('image/')) {
     return {
@@ -99,7 +101,13 @@ export async function createPost(
     };
   }
 
-  if (title === '' || content === '' || file.size === 0) {
+  if (
+    title === '' ||
+    content === '' ||
+    file.size === 0 ||
+    tags?.length === 0 ||
+    !tags
+  ) {
     return {
       message: 'Please fill in all fields',
       type: 'error',
@@ -113,8 +121,8 @@ export async function createPost(
     });
 
     await sql`
-      INSERT INTO posts (title, content, image_url)
-      VALUES (${title}, ${content}, ${blob.url})
+      INSERT INTO posts (title, content, image_url, tags)
+      VALUES (${title}, ${content}, ${blob.url}, ${JSON.stringify(tags)})
       RETURNING *;
     `;
 
@@ -141,19 +149,11 @@ export async function updatePost(
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;
   const file = formData.get('image') as File | null;
+  const tagsString = formData.get('tags') as string;
+  const tags = JSON.parse(tagsString) as string[];
+  let imageUrl = formData.get('imageURL') as string | null;
 
-  let imageUrl: string | undefined;
-  let query;
-  let parameters;
-
-  if (!file?.type.startsWith('image/')) {
-    return {
-      message: 'Please select an image file',
-      type: 'error',
-    };
-  }
-
-  if (title === '' || content === '') {
+  if (title === '' || content === '' || tags?.length === 0 || !tags) {
     return {
       message: 'Please fill in all fields',
       type: 'error',
@@ -162,6 +162,13 @@ export async function updatePost(
 
   try {
     if (file && file.size > 0) {
+      if (!file.type.startsWith('image/')) {
+        return {
+          message: 'Please select an image file',
+          type: 'error',
+        };
+      }
+
       const blob = await put(file.name, file, {
         token: process.env.BLOB_READ_WRITE_TOKEN,
         access: 'public',
@@ -169,12 +176,15 @@ export async function updatePost(
       imageUrl = blob.url;
     }
 
-    if (imageUrl !== undefined) {
-      query = `UPDATE posts SET title = $1, content = $2, image_url = $3 WHERE id = $4 RETURNING *;`;
-      parameters = [title, content, imageUrl, id];
+    let query;
+    let parameters;
+
+    if (imageUrl) {
+      query = `UPDATE posts SET title = $1, content = $2, image_url = $3, tags = $4 WHERE id = $5 RETURNING *;`;
+      parameters = [title, content, imageUrl, JSON.stringify(tags), id];
     } else {
-      query = `UPDATE posts SET title = $1, content = $2 WHERE id = $3 RETURNING *;`;
-      parameters = [title, content, id];
+      query = `UPDATE posts SET title = $1, content = $2, tags = $3 WHERE id = $4 RETURNING *;`;
+      parameters = [title, content, JSON.stringify(tags), id];
     }
 
     await sql.query(query, parameters);
@@ -221,6 +231,69 @@ export async function deletePost(postId: number) {
     console.log(error);
     return {
       message: 'Failed to delete post. Please try again.',
+      type: 'error',
+    };
+  }
+}
+
+export async function createTag(
+  state: { message: any; type: string } | undefined,
+  formData: FormData
+) {
+  const tag = formData.get('tag') as string;
+
+  if (!tag)
+    return {
+      message: 'Please enter a tag',
+      type: 'error',
+    };
+
+  try {
+    await sql`INSERT INTO tags (name) VALUES (${tag}) ON CONFLICT (name) DO NOTHING;`;
+
+    revalidatePath('/dashboard/tags');
+    revalidatePath('/dashboard/posts/create');
+    revalidatePath('/dashboard/posts/[id]/edit', 'page');
+
+    return {
+      message: 'Tag created successfully',
+      type: 'success',
+    };
+  } catch (error: any) {
+    return {
+      message: 'Failed to create tag. Please try again.',
+      type: 'error',
+    };
+  }
+}
+
+export async function deleteTag(tagId: number) {
+  try {
+    const result = await sql`
+      DELETE FROM tags
+      WHERE id = ${tagId}
+      RETURNING *;
+    `;
+
+    if (!result.rows.length) {
+      return {
+        message: 'Tag not found or already deleted',
+        type: 'error',
+      };
+    }
+
+    revalidatePath('/dashboard/tags');
+    revalidatePath('/dashboard/posts/create');
+    revalidatePath('/dashboard/posts/[id]/edit', 'page');
+
+    return {
+      message: 'Tag successfully deleted',
+      type: 'success',
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      message: 'Failed to delete tag. Please try again.',
       type: 'error',
     };
   }

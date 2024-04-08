@@ -8,10 +8,14 @@ import Message from '../../Message';
 import { useFormState } from 'react-dom';
 import ImageUload from './ImageUpload';
 import Editor from './Editor';
+import TagsInput from './TagsInput';
 
-export default function CreatePostForm() {
+export default function CreatePostForm(suggestedTags: {
+  suggestedTags: { id: number; name: string }[];
+}) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
   const fileInputRef = useRef(null);
 
   const setContentHandler = (value: string) => {
@@ -20,6 +24,7 @@ export default function CreatePostForm() {
 
   async function formAction(_: any, formData: FormData) {
     formData.append('content', content);
+    formData.append('tags', JSON.stringify(tags));
 
     if ((fileInputRef.current as any)?.files?.[0]) {
       formData.append(
@@ -51,12 +56,13 @@ export default function CreatePostForm() {
         type='text'
         name='title'
         placeholder='Title'
-        className='px-4 py-2 w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'
+        className='px-4 py-3 w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-body'
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
       <Editor setContentHandler={setContentHandler} content={content} />
       <ImageUload fileInputRef={fileInputRef} />
+      <TagsInput tags={tags} setTags={setTags} suggestedTags={suggestedTags} />
       <Button type='submit'>Publish</Button>
       {state.message && (
         <Message

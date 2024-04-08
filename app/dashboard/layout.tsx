@@ -8,7 +8,7 @@ export default async function Layout({
   return (
     <div className='flex flex-col md:flex-row'>
       <SideNav />
-      <div className='flex-grow p-10'>{children}</div>
+      <div className='p-4 md:p-10 flex-grow'>{children}</div>
     </div>
   );
 }

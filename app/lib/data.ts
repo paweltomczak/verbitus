@@ -25,3 +25,16 @@ export async function fetchPostById(id: string) {
     throw new Error('Failed to fetch post.');
   }
 }
+
+export async function fetchTags() {
+  try {
+    const result = await sql`
+      SELECT * FROM tags;
+    `;
+
+    return result.rows;
+  } catch (error: any) {
+    console.log(error);
+    return [];
+  }
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import Button from '@/app/ui/Button';
 import { updatePost } from '@/app/lib/actions';
@@ -9,10 +9,18 @@ import { useFormState } from 'react-dom';
 import { Post } from '@/app/lib/interfaces';
 import ImageUload from './ImageUpload';
 import Editor from './Editor';
+import TagsInput from './TagsInput';
 
-export default function EditPostForm({ post }: { post: Post }) {
+export default function EditPostForm({
+  post,
+  suggestedTags,
+}: {
+  post: Post;
+  suggestedTags: { suggestedTags: { id: number; name: string }[] };
+}) {
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
+  const [tags, setTags] = useState<string[]>(post.tags);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -25,6 +33,7 @@ export default function EditPostForm({ post }: { post: Post }) {
 
   async function formAction(_: any, formData: FormData) {
     formData.append('content', content);
+    formData.append('tags', JSON.stringify(tags));
 
     if (fileInputRef.current?.files?.[0]) {
       formData.append(
@@ -32,6 +41,10 @@ export default function EditPostForm({ post }: { post: Post }) {
         fileInputRef.current.files[0],
         fileInputRef.current.files[0].name
       );
+    }
+
+    if (post.image_url) {
+      formData.append('image_url', post.image_url);
     }
 
     const result = await updatePost(post.id, undefined, formData);
@@ -62,6 +75,7 @@ export default function EditPostForm({ post }: { post: Post }) {
       />
       <Editor setContentHandler={setContentHandler} content={content} />
       <ImageUload fileInputRef={fileInputRef} imageUrl={post.image_url} />
+      <TagsInput tags={tags} setTags={setTags} suggestedTags={suggestedTags} />
       <Button type='submit'>Edit Post</Button>
       {state.message && (
         <Message

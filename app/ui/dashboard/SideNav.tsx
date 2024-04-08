@@ -24,7 +24,7 @@ const navigation = [
     icon: FolderPlusIcon,
     href: '/dashboard/categories/create',
   },
-  { name: 'Add Tags', icon: TagIcon, href: '/dashboard/tags/create' },
+  { name: 'Add Tags', icon: TagIcon, href: '/dashboard/tags' },
 ];
 
 export default function SideNav() {

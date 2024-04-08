@@ -12,4 +12,5 @@ export type Post = {
   image_url: string;
   created_at: string;
   updated_at: string;
+  tags: string[];
 };
