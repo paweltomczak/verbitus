@@ -1,22 +1,22 @@
 'use client';
 
-import { createTag } from '@/app/lib/actions';
+import { createCategory } from '@/app/lib/actions';
 import Button from '@/app/ui/Button';
 import { useFormState } from 'react-dom';
 import Message from '../../Message';
 
-export default function CreateTagForm() {
-  const [state, dispatchTag] = useFormState(createTag, undefined);
+export default function CreateCategoryForm() {
+  const [state, dispatchCategory] = useFormState(createCategory, undefined);
   return (
     <div>
-      <form action={dispatchTag}>
+      <form action={dispatchCategory}>
         <input
           type='text'
-          name='tag'
+          name='category'
           className='px-4 py-3 mb-4 w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-body'
-          placeholder='Add new tag'
+          placeholder='Add new Category'
         />
-        <Button type='submit'>Add Tag</Button>
+        <Button type='submit'>Add Category</Button>
       </form>
       {state?.message && (
         <Message

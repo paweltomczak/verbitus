@@ -22,7 +22,7 @@ const navigation = [
   {
     name: 'Add Category',
     icon: FolderPlusIcon,
-    href: '/dashboard/categories/create',
+    href: '/dashboard/categories',
   },
   { name: 'Add Tags', icon: TagIcon, href: '/dashboard/tags' },
 ];

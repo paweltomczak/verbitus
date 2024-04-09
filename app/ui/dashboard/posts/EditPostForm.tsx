@@ -10,17 +10,23 @@ import { Post } from '@/app/lib/interfaces';
 import ImageUload from './ImageUpload';
 import Editor from './Editor';
 import TagsInput from './TagsInput';
+import CategorySelect from './CategorySelection';
 
 export default function EditPostForm({
   post,
   suggestedTags,
+  categories,
 }: {
   post: Post;
-  suggestedTags: { suggestedTags: { id: number; name: string }[] };
+  suggestedTags: { id: number; name: string }[];
+  categories: { id: number; name: string }[];
 }) {
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
   const [tags, setTags] = useState<string[]>(post.tags);
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
+    post.category
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -33,6 +39,7 @@ export default function EditPostForm({
 
   async function formAction(_: any, formData: FormData) {
     formData.append('content', content);
+    formData.append('category', selectedCategory as string);
     formData.append('tags', JSON.stringify(tags));
 
     if (fileInputRef.current?.files?.[0]) {
@@ -75,6 +82,11 @@ export default function EditPostForm({
       />
       <Editor setContentHandler={setContentHandler} content={content} />
       <ImageUload fileInputRef={fileInputRef} imageUrl={post.image_url} />
+      <CategorySelect
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        categories={categories}
+      />
       <TagsInput tags={tags} setTags={setTags} suggestedTags={suggestedTags} />
       <Button type='submit'>Edit Post</Button>
       {state.message && (

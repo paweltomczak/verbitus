@@ -1,5 +1,5 @@
 import { fetchTags } from '@/app/lib/data';
-import RemoveTag from '@/app/ui/dashboard/buttons';
+import { RemoveTag } from '@/app/ui/dashboard/buttons';
 import CreateTagForm from '@/app/ui/dashboard/tags/CreateTagForm';
 
 export default async function Page() {

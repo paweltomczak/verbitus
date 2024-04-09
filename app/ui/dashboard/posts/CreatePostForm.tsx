@@ -9,13 +9,19 @@ import { useFormState } from 'react-dom';
 import ImageUload from './ImageUpload';
 import Editor from './Editor';
 import TagsInput from './TagsInput';
+import CategorySelect from './CategorySelection';
 
-export default function CreatePostForm(suggestedTags: {
+export default function CreatePostForm({
+  suggestedTags,
+  categories,
+}: {
   suggestedTags: { id: number; name: string }[];
+  categories: { id: number; name: string }[];
 }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>();
   const fileInputRef = useRef(null);
 
   const setContentHandler = (value: string) => {
@@ -24,6 +30,7 @@ export default function CreatePostForm(suggestedTags: {
 
   async function formAction(_: any, formData: FormData) {
     formData.append('content', content);
+    formData.append('category', selectedCategory as string);
     formData.append('tags', JSON.stringify(tags));
 
     if ((fileInputRef.current as any)?.files?.[0]) {
@@ -62,6 +69,11 @@ export default function CreatePostForm(suggestedTags: {
       />
       <Editor setContentHandler={setContentHandler} content={content} />
       <ImageUload fileInputRef={fileInputRef} />
+      <CategorySelect
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        categories={categories}
+      />
       <TagsInput tags={tags} setTags={setTags} suggestedTags={suggestedTags} />
       <Button type='submit'>Publish</Button>
       {state.message && (

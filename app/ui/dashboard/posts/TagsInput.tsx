@@ -8,7 +8,7 @@ export default function TagInput({
 }: {
   tags: string[] | undefined;
   setTags: (newTags: string[]) => void;
-  suggestedTags: { suggestedTags: { id: number; name: string }[] };
+  suggestedTags: { id: number; name: string }[];
 }) {
   const [inputValue, setInputValue] = useState('');
   const [filteredSuggestions, setFilteredSuggestions] = useState<
@@ -18,13 +18,13 @@ export default function TagInput({
   useEffect(() => {
     const effectiveTags = tags || [];
 
-    const filtered = suggestedTags?.suggestedTags?.filter(
+    const filtered = suggestedTags?.filter(
       (suggestedTag) =>
         suggestedTag.name.toLowerCase().includes(inputValue.toLowerCase()) &&
         !effectiveTags.includes(suggestedTag.name)
     );
     setFilteredSuggestions(filtered);
-  }, [inputValue, tags, suggestedTags?.suggestedTags]);
+  }, [inputValue, tags, suggestedTags]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -44,23 +44,20 @@ export default function TagInput({
   };
 
   return (
-    <div className='flex flex-col gap-2 bg-body rounded'>
-      <div className='flex flex-wrap items-center gap-2 mb-2'>
+    <div className='flex flex-col bg-body rounded py-2'>
+      <div className='flex flex-wrap items-center'>
         {(tags || []).map((tag, index) => (
           <div
             key={index}
-            className='flex items-center bg-primary text-white text-sm font-medium px-2 py-1 rounded'
+            className='flex items-center bg-primary text-white text-sm font-medium mr-3 px-2 py-1 mb-6 rounded'
           >
             {tag}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRemoveTag(index);
-              }}
-              className='bg-transparent hover:text-red-500 rounded ml-2 p-1'
+            <a
+              onClick={() => handleRemoveTag(index)}
+              className='bg-transparent hover:text-red-500 rounded ml-2 p-1 cursor-pointer'
             >
               <XMarkIcon className='h-4 w-4' />
-            </button>
+            </a>
           </div>
         ))}
       </div>
@@ -68,11 +65,11 @@ export default function TagInput({
         type='text'
         value={inputValue}
         onChange={handleInputChange}
-        className='p-3 border border-gray-300 rounded shadow-sm'
+        className='p-3 border border-gray-300 rounded shadow-sm bg-body'
         placeholder='Add a tag...'
       />
       {inputValue && filteredSuggestions?.length > 0 && (
-        <ul className='-mt-2 bg-white shadow rounded overflow-auto max-h-40'>
+        <ul className=' bg-body shadow rounded overflow-auto max-h-40'>
           {filteredSuggestions.map((suggestion) => (
             <li
               key={suggestion.id}

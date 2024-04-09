@@ -1,6 +1,6 @@
 'use client';
 
-import { deletePost, deleteTag } from '@/app/lib/actions';
+import { deleteCategory, deletePost, deleteTag } from '@/app/lib/actions';
 import { PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { useFormState } from 'react-dom';
@@ -36,12 +36,28 @@ export function EditPost({ id }: { id: number }) {
   );
 }
 
-export default function RemoveTag({ id }: { id: number }) {
-  const deletePostWithId = deleteTag.bind(null, id);
-  const [state, deleteTagDispatch] = useFormState(deletePostWithId, undefined);
+export function RemoveTag({ id }: { id: number }) {
+  const deleteTagWithId = deleteTag.bind(null, id);
+  const [state, deleteTagDispatch] = useFormState(deleteTagWithId, undefined);
 
   return (
     <form action={deleteTagDispatch}>
+      <Button otherClasses='py-2 px-0 hover:bg-primary text-white font-bold rounded  items-center'>
+        <XMarkIcon className='h-5 w-5  hover:text-red-500' />
+      </Button>
+    </form>
+  );
+}
+
+export function RemoveCategory({ id }: { id: number }) {
+  const deleteCategoryWithId = deleteCategory.bind(null, id);
+  const [state, deleteCategoryDispatch] = useFormState(
+    deleteCategoryWithId,
+    undefined
+  );
+
+  return (
+    <form action={deleteCategoryDispatch}>
       <Button otherClasses='py-2 px-0 hover:bg-primary text-white font-bold rounded  items-center'>
         <XMarkIcon className='h-5 w-5  hover:text-red-500' />
       </Button>

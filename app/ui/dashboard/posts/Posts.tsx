@@ -12,7 +12,7 @@ export default async function Posts() {
         <div className='flex-1 p-2 text-center font-bold'>Title</div>
         <div className='flex-1 p-2 text-center font-bold'>Content</div>
         <div className='flex-1 p-2 text-center font-bold'>Date</div>
-        <div className='flex-1 p-2 text-center font-bold'>Tags</div>
+        <div className='flex-1 p-2 text-center font-bold'>Category</div>
         <div className='flex-1 p-2 text-center font-bold'>Image</div>
         <div className='hidden flex-1 p-2 text-center font-bold md:block'></div>
       </div>
@@ -28,7 +28,7 @@ export default async function Posts() {
           <div className='flex-1 p-2 text-center'>
             {post.created_at.toLocaleDateString()}
           </div>
-          <div className='flex-1 p-2 text-center'>{post.tags?.join(', ')}</div>
+          <div className='flex-1 p-2 text-center'>{post.category}</div>
           <div className='flex-1 p-2 flex justify-center items-center'>
             <Image
               src={post.image_url}

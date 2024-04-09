@@ -91,6 +91,7 @@ export async function createPost(
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;
   const file = formData.get('image') as File;
+  const category = formData.get('category') as string;
   const tagsString = formData.get('tags') as string;
   const tags = JSON.parse(tagsString) as string[];
 
@@ -106,7 +107,9 @@ export async function createPost(
     content === '' ||
     file.size === 0 ||
     tags?.length === 0 ||
-    !tags
+    !tags ||
+    category === undefined ||
+    category === 'null'
   ) {
     return {
       message: 'Please fill in all fields',
@@ -121,8 +124,10 @@ export async function createPost(
     });
 
     await sql`
-      INSERT INTO posts (title, content, image_url, tags)
-      VALUES (${title}, ${content}, ${blob.url}, ${JSON.stringify(tags)})
+      INSERT INTO posts (title, content, image_url, tags, category)
+      VALUES (${title}, ${content}, ${blob.url}, ${JSON.stringify(
+      tags
+    )}, ${category})
       RETURNING *;
     `;
 
@@ -149,11 +154,18 @@ export async function updatePost(
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;
   const file = formData.get('image') as File | null;
+  const category = formData.get('category') as string;
   const tagsString = formData.get('tags') as string;
   const tags = JSON.parse(tagsString) as string[];
   let imageUrl = formData.get('imageURL') as string | null;
 
-  if (title === '' || content === '' || tags?.length === 0 || !tags) {
+  if (
+    title === '' ||
+    content === '' ||
+    tags?.length === 0 ||
+    !tags ||
+    category === 'null'
+  ) {
     return {
       message: 'Please fill in all fields',
       type: 'error',
@@ -180,11 +192,18 @@ export async function updatePost(
     let parameters;
 
     if (imageUrl) {
-      query = `UPDATE posts SET title = $1, content = $2, image_url = $3, tags = $4 WHERE id = $5 RETURNING *;`;
-      parameters = [title, content, imageUrl, JSON.stringify(tags), id];
+      query = `UPDATE posts SET title = $1, content = $2, image_url = $3, tags = $4, category = $5 WHERE id = $6 RETURNING *;`;
+      parameters = [
+        title,
+        content,
+        imageUrl,
+        JSON.stringify(tags),
+        category,
+        id,
+      ];
     } else {
-      query = `UPDATE posts SET title = $1, content = $2, tags = $3 WHERE id = $4 RETURNING *;`;
-      parameters = [title, content, JSON.stringify(tags), id];
+      query = `UPDATE posts SET title = $1, content = $2, tags = $3, category = $4 WHERE id = $5 RETURNING *;`;
+      parameters = [title, content, JSON.stringify(tags), category, id];
     }
 
     await sql.query(query, parameters);
@@ -294,6 +313,70 @@ export async function deleteTag(tagId: number) {
     console.log(error);
     return {
       message: 'Failed to delete tag. Please try again.',
+      type: 'error',
+    };
+  }
+}
+
+export async function createCategory(
+  state: { message: any; type: string } | undefined,
+  formData: FormData
+) {
+  const category = formData.get('category') as string;
+
+  if (!category)
+    return {
+      message: 'Please enter a category',
+      type: 'error',
+    };
+
+  try {
+    await sql`INSERT INTO categories (name) VALUES (${category}) ON CONFLICT (name) DO NOTHING;`;
+
+    revalidatePath('/dashboard/categories');
+    revalidatePath('/dashboard/posts/create');
+    revalidatePath('/dashboard/posts/[id]/edit', 'page');
+
+    return {
+      message: 'Category created successfully',
+      type: 'success',
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      message: 'Failed to create Category. Please try again.',
+      type: 'error',
+    };
+  }
+}
+
+export async function deleteCategory(categoryId: number) {
+  try {
+    const result = await sql`
+      DELETE FROM categories
+      WHERE id = ${categoryId}
+      RETURNING *;
+    `;
+
+    if (!result.rows.length) {
+      return {
+        message: 'Category not found or already deleted',
+        type: 'error',
+      };
+    }
+
+    revalidatePath('/dashboard/categories');
+    revalidatePath('/dashboard/posts/create');
+    revalidatePath('/dashboard/posts/[id]/edit', 'page');
+
+    return {
+      message: 'Category successfully deleted',
+      type: 'success',
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      message: 'Failed to delete Category. Please try again.',
       type: 'error',
     };
   }

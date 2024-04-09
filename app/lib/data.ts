@@ -26,13 +26,28 @@ export async function fetchPostById(id: string) {
   }
 }
 
-export async function fetchTags() {
+export async function fetchTags(): Promise<{ id: number; name: string }[]> {
   try {
-    const result = await sql`
-      SELECT * FROM tags;
-    `;
+    const result = await sql`SELECT * FROM tags;`;
+    return result.rows.map((row) => ({
+      id: Number(row.id),
+      name: String(row.name),
+    }));
+  } catch (error: any) {
+    console.log(error);
+    return [];
+  }
+}
 
-    return result.rows;
+export async function fetchCategories(): Promise<
+  { id: number; name: string }[]
+> {
+  try {
+    const result = await sql`SELECT * FROM categories;`;
+    return result.rows.map((row) => ({
+      id: Number(row.id),
+      name: String(row.name),
+    }));
   } catch (error: any) {
     console.log(error);
     return [];
