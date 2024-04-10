@@ -14,6 +14,7 @@ import {
 import Link from 'next/link';
 import { SignOutUser } from '@/app/lib/actions';
 import { usePathname } from 'next/navigation';
+import { kanit } from '../fonts';
 
 const navigation = [
   { name: 'Dashboard', icon: HomeIcon, href: '/dashboard' },
@@ -58,7 +59,7 @@ export default function SideNav() {
           expanded ? 'w-64' : 'w-16'
         } p-5 pt-8 relative duration-100 h-screen flex-col justify-between md:block hidden`}
       >
-        <div>
+        <div className='flex flex-col h-full'>
           <a
             className='absolute -right-5 top-1/2 transform -translate-y-1/2 bg-body rounded-full p-1 cursor-pointer pt-4'
             style={{
@@ -74,7 +75,7 @@ export default function SideNav() {
             )}
           </a>
 
-          <div className='mt-5 space-y-6'>
+          <div className='mt-5 space-y-6 flex flex-col h-full'>
             {navigation.map((item) => (
               <Link
                 href={item.href}
@@ -97,6 +98,7 @@ export default function SideNav() {
                 )}
               </Link>
             ))}
+            <div className='flex-grow'></div>
             <form action={SignOutUser}>
               <div
                 className={`flex items-center ${
@@ -117,6 +119,17 @@ export default function SideNav() {
                 </button>
               </div>
             </form>
+            <hr className='border-t border-slate-700' />
+            <div className='flex flex-col justify-center items-center gap-3 pb-5 '>
+              <span
+                className={`${kanit.className} text-2xl font-medium text-white `}
+              >
+                {expanded ? 'Verbitus' : 'V'}
+              </span>
+              <span className='text-white text-sm inline-block text-center'>
+                {new Date().getFullYear()}
+              </span>
+            </div>
           </div>
         </div>
       </div>
