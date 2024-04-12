@@ -1,9 +1,12 @@
 import Header from '@/app/ui/Header';
+import { fetchCategories } from './lib/data';
 
-export default function Home() {
+export default async function Home() {
+  const categories = await fetchCategories();
+
   return (
     <>
-      <Header />
+      <Header categories={categories} />
       <div className='max-w-6xl mx-auto px-4 m-6'>
         <h1>Header</h1>
         <p>

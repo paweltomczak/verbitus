@@ -120,13 +120,15 @@ export default function SideNav() {
               </div>
             </form>
             <hr className='border-t border-slate-700' />
-            <div className='flex flex-col justify-center items-center gap-3 pb-5 '>
-              <span
-                className={`${kanit.className} text-2xl font-medium text-white `}
-              >
-                {expanded ? 'Verbitus' : 'V'}
-              </span>
-              <span className='text-white text-sm inline-block text-center'>
+            <div className='flex flex-col justify-center items-center gap-3 pb-5'>
+              <div className='text-2xl font-medium text-white w-full text-center'>
+                {expanded ? (
+                  <span className={`${kanit.className}`}>Verbitus</span>
+                ) : (
+                  <span className={`${kanit.className}`}>V</span>
+                )}
+              </div>
+              <span className='text-white text-sm block text-center'>
                 {new Date().getFullYear()}
               </span>
             </div>

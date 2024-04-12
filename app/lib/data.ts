@@ -27,6 +27,8 @@ export async function fetchPostById(id: string) {
 }
 
 export async function fetchTags(): Promise<{ id: number; name: string }[]> {
+  noStore();
+
   try {
     const result = await sql`SELECT * FROM tags;`;
     return result.rows.map((row) => ({
@@ -42,6 +44,8 @@ export async function fetchTags(): Promise<{ id: number; name: string }[]> {
 export async function fetchCategories(): Promise<
   { id: number; name: string }[]
 > {
+  noStore();
+
   try {
     const result = await sql`SELECT * FROM categories;`;
     return result.rows.map((row) => ({
