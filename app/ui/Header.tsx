@@ -35,7 +35,7 @@ export default function Header({
             <div className='text-center lg:text-left h-full flex items-center justify-center'>
               <Link
                 href={'/'}
-                className={`${kanit.className} text-3xl font-medium`}
+                className={`${kanit.className} text-3xl font-semibold`}
               >
                 Verbitus
               </Link>
