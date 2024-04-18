@@ -1,6 +1,6 @@
 import SideNav from '@/app/ui/dashboard/SideNav';
 
-export default async function Layout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;

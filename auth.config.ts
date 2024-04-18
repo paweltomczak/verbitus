@@ -1,4 +1,5 @@
 import type { NextAuthConfig } from 'next-auth';
+import { NextResponse } from 'next/server';
 
 export const authConfig = {
   pages: {
@@ -7,11 +8,22 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
-      if (isOnDashboard) {
-        if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
+      const isOnSignInPage = nextUrl.pathname === '/signin';
+      const isOnSignUpPage = nextUrl.pathname === '/signup';
+
+      if ((isOnSignInPage || isOnSignUpPage) && isLoggedIn) {
+        const url = nextUrl.clone();
+        url.pathname = '/dashboard';
+        return NextResponse.redirect(url);
       }
+
+      const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+      if (isOnDashboard && !isLoggedIn) {
+        const url = nextUrl.clone();
+        url.pathname = '/signin';
+        return NextResponse.redirect(url);
+      }
+
       return true;
     },
   },
