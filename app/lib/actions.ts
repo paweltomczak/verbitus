@@ -6,7 +6,13 @@ import { sql } from '@vercel/postgres';
 import bcryptjs from 'bcryptjs';
 import { AuthError } from 'next-auth';
 import { signIn, signOut } from '@/auth';
-import { put, del } from '@vercel/blob';
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
+import { storage } from './firebase';
 
 export async function SignUpUser(
   state: { message: any; type: string } | undefined,
@@ -118,14 +124,13 @@ export async function createPost(
   }
 
   try {
-    const blob = await put(file.name, file, {
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-      access: 'public',
-    });
+    const fileRef = ref(storage, `posts/${file.name}`);
+    await uploadBytes(fileRef, file);
+    const imageUrl = await getDownloadURL(fileRef);
 
     await sql`
       INSERT INTO posts (title, content, image_url, tags, category)
-      VALUES (${title}, ${content}, ${blob.url}, ${JSON.stringify(
+      VALUES (${title}, ${content}, ${imageUrl}, ${JSON.stringify(
       tags
     )}, ${category})
       RETURNING *;
@@ -181,11 +186,9 @@ export async function updatePost(
         };
       }
 
-      const blob = await put(file.name, file, {
-        token: process.env.BLOB_READ_WRITE_TOKEN,
-        access: 'public',
-      });
-      imageUrl = blob.url;
+      const fileRef = ref(storage, `posts/${file.name}`);
+      await uploadBytes(fileRef, file);
+      imageUrl = await getDownloadURL(fileRef);
     }
 
     let query;
@@ -225,12 +228,13 @@ export async function updatePost(
 
 export async function deletePost(postId: number) {
   try {
-    const blobUrl = await sql`
+    const image = await sql`
       SELECT image_url FROM posts WHERE id = ${postId};
     `;
-    const imageUrl = blobUrl.rows[0].image_url;
+    const imageUrl = image.rows[0].image_url;
 
-    if (blobUrl.rows.length) await del(imageUrl);
+    const fileRef = ref(storage, imageUrl);
+    await deleteObject(fileRef);
 
     const result = await sql`
       DELETE FROM posts

@@ -24,9 +24,9 @@ export default function BlogPost({
               <Image
                 src={post.image_url}
                 alt={post.title}
-                layout='fill'
-                objectFit='cover'
-                className='rounded-lg'
+                width={600}
+                height={350}
+                className='rounded object-cover'
                 priority={isFeatured}
               />
             </Link>
@@ -54,9 +54,9 @@ export default function BlogPost({
               <Image
                 src={post.image_url}
                 alt={post.title}
-                layout='fill'
-                objectFit='cover'
-                className='rounded-lg'
+                width={550}
+                height={250}
+                className='rounded object-cover'
                 priority={isFeatured}
               />
             </Link>

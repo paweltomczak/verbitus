@@ -14,8 +14,6 @@ export async function generateStaticParams() {
 export default async function Home() {
   const posts = (await fetchPosts()) as Post[];
 
-  console.log(posts);
-
   return (
     <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-wrap'>
       {posts.map((post, index) => (

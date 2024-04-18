@@ -4,9 +4,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'bmeqkx4gjezfj8mi.public.blob.vercel-storage.com',
+        hostname: 'firebasestorage.googleapis.com',
       },
     ],
+    minimumCacheTTL: 60,
   },
 };
 
