@@ -1,12 +1,11 @@
-import { fetchCategories, fetchTags } from '@/app/lib/data';
-import CreatePostForm from '@/app/ui/dashboard/posts/CreatePostForm';
-import { QueryResultRow } from '@vercel/postgres';
+import { CreatePost } from '@/app/ui/dashboard/posts/CreatePost';
+import { Spinner } from '@/app/ui/loaders';
+import { Suspense } from 'react';
 
 export default async function Page() {
-  const suggestedTags = await fetchTags();
-  const categories = await fetchCategories();
-
   return (
-    <CreatePostForm suggestedTags={suggestedTags} categories={categories} />
+    <Suspense fallback={<Spinner />}>
+      <CreatePost />
+    </Suspense>
   );
 }

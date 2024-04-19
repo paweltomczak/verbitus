@@ -13,7 +13,7 @@ export default function Editor({
     () =>
       dynamic(() => import('react-quill'), {
         ssr: false,
-        loading: () => <Spinner />,
+        loading: () => <div className='h-[300px]'></div>,
       }),
     []
   );

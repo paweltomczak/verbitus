@@ -7,7 +7,7 @@ export default async function Posts() {
   const posts = await fetchPosts();
 
   return (
-    <div>
+    <div className='p-4 md:p-10 flex-grow flex-1'>
       <div className='flex flex-wrap md:flex-nowrap bg-primary text-body p-4 shadow-md rounded-t-lg m-2'>
         <div className='flex-1 p-2 text-center font-bold'>Title</div>
         <div className='flex-1 p-2 text-center font-bold'>Content</div>

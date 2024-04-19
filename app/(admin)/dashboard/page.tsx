@@ -1,6 +1,6 @@
 export default async function Page() {
   return (
-    <div>
+    <div className='p-4 md:p-10 flex-grow flex-1'>
       <h2 className='text-2xl font-semibold mb-4'>
         Welcome Back,
         <br />

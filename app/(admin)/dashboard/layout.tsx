@@ -6,9 +6,9 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className='flex flex-col md:flex-row'>
+    <div className='flex flex-col md:flex-row min-h-screen'>
       <SideNav />
-      <div className='p-4 md:p-10 flex-grow'>{children}</div>
+      {children}
     </div>
   );
 }
