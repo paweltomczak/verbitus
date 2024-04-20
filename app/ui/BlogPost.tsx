@@ -6,10 +6,10 @@ import { getPostSlug } from '../lib/data';
 
 export default function BlogPost({
   post,
-  isFeatured,
+  isFeatured = false,
 }: {
   post: Post;
-  isFeatured: boolean;
+  isFeatured?: boolean;
 }) {
   const firstParagraph = extractFirstParagraph(post.content);
 

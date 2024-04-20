@@ -26,6 +26,16 @@ export async function fetchPostById(id: string) {
   }
 }
 
+export async function fetchPostsByCategory(category: string) {
+  try {
+    const { rows } =
+      await sql`SELECT * FROM posts WHERE category = ${category} ORDER BY created_at DESC`;
+    return rows;
+  } catch (error) {
+    throw new Error(`Failed to fetch posts for the category ${category}.`);
+  }
+}
+
 export async function fetchTags(): Promise<{ id: number; name: string }[]> {
   noStore();
 
