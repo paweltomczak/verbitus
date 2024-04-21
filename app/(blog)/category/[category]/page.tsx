@@ -1,7 +1,7 @@
 import { fetchPostsByCategory } from '@/app/lib/data';
 import { Post } from '@/app/lib/interfaces';
 import { urlToCategory } from '@/app/lib/utils';
-import BlogPost from '@/app/ui/BlogPost';
+import BlogPost from '@/app/ui/posts/BlogPost';
 
 export default async function Page({
   params,

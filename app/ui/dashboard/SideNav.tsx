@@ -14,7 +14,7 @@ import {
 import Link from 'next/link';
 import { SignOutUser } from '@/app/lib/actions';
 import { usePathname } from 'next/navigation';
-import { kanit } from '../fonts';
+import { kanit } from '../styles/fonts';
 
 const navigation = [
   { name: 'Dashboard', icon: HomeIcon, href: '/dashboard' },

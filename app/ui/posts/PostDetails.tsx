@@ -19,9 +19,8 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
           <Image
             src={post.image_url}
             alt={post.title}
-            layout='fill'
-            objectFit='cover'
-            className='md:pb-10'
+            fill={true}
+            className='md:pb-10 object-cover'
           />
         </div>
         <div className='max-w-4xl mx-auto px-4 text-center mt-6'>

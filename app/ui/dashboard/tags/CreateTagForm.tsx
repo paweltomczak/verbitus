@@ -1,9 +1,9 @@
 'use client';
 
 import { createTag } from '@/app/lib/actions';
-import Button from '@/app/ui/Button';
+import Button from '@/app/ui/common/Button';
 import { useFormState } from 'react-dom';
-import Message from '../../Message';
+import Message from '../Message';
 
 export default function CreateTagForm() {
   const [state, dispatchTag] = useFormState(createTag, undefined);

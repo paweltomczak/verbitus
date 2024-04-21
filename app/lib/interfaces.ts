@@ -15,3 +15,5 @@ export type Post = {
   tags: string[];
   category: string;
 };
+
+export type Theme = 'dark' | 'light';

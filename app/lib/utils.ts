@@ -1,3 +1,5 @@
+import { Theme } from './interfaces';
+
 export function removeHTMLTags(htmlString: string) {
   return htmlString.replace(/<[^>]*>/g, '');
 }
@@ -19,4 +21,8 @@ export const urlToCategory = (url: string) => {
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
+};
+
+export const setThemeCookie = (theme: Theme) => {
+  document.cookie = `theme=${theme}; path=/; max-age=31536000; samesite=lax`;
 };

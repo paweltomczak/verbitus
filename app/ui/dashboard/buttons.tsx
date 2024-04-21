@@ -4,7 +4,7 @@ import { deleteCategory, deletePost, deleteTag } from '@/app/lib/actions';
 import { PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { useFormState } from 'react-dom';
-import Button from '../Button';
+import Button from '../common/Button';
 import { useState } from 'react';
 
 export function DeletePost({ id }: { id: number }) {

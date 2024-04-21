@@ -2,9 +2,9 @@
 
 import { useState, useRef } from 'react';
 import 'react-quill/dist/quill.snow.css';
-import Button from '../../Button';
+import Button from '../../common/Button';
 import { createPost } from '../../../lib/actions';
-import Message from '../../Message';
+import Message from '../Message';
 import { useFormState } from 'react-dom';
 import ImageUload from './ImageUpload';
 import Editor from './Editor';

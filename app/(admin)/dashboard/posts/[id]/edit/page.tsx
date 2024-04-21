@@ -1,5 +1,5 @@
 import { EditPost } from '@/app/ui/dashboard/posts/EditPost';
-import { Spinner } from '@/app/ui/loaders';
+import { Spinner } from '@/app/ui/common/loaders';
 import { Suspense } from 'react';
 
 export default async function Page({ params }: { params: { id: string } }) {

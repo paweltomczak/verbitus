@@ -6,15 +6,19 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from '@heroicons/react/24/solid';
-import { kanit } from './fonts';
+import { kanit } from '../styles/fonts';
 import Link from 'next/link';
-import { categoryToURL, urlToCategory } from '../lib/utils';
+import { categoryToURL, urlToCategory } from '../../lib/utils';
 import { usePathname } from 'next/navigation';
+import { ThemeSwitcher } from './ThemeSwitcher';
+import { Theme } from '@/app/lib/interfaces';
 
 export default function Header({
   categories,
+  theme,
 }: {
   categories: { id: number; name: string }[];
+  theme: Theme;
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const pathname = usePathname();
@@ -41,7 +45,7 @@ export default function Header({
             <div className='text-center lg:text-left h-full flex items-center justify-center'>
               <Link
                 href={'/'}
-                className={`${kanit.className} text-3xl font-semibold`}
+                className={`${kanit.className} text-3xl font-semibold hover:text-hover`}
               >
                 Verbitus
               </Link>
@@ -55,7 +59,7 @@ export default function Header({
                 href={`/category/${categoryToURL(category.name)}`}
                 className={`px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis ${
                   isActive(categoryToURL(category.name))
-                    ? ' text-primary transition font-bold'
+                    ? ' text-primary transition font-bold dark:text-body'
                     : 'hover:text-hover'
                 } text-sm uppercase`}
                 style={{ minWidth: '120px', maxWidth: '180px' }}
@@ -68,6 +72,9 @@ export default function Header({
           <div className='flex-1 lg:flex-none flex justify-end'>
             <MagnifyingGlassIcon className='h-6 w-6' />
           </div>
+          <div className='ml-6'>
+            <ThemeSwitcher theme={theme} />
+          </div>
         </div>
         <div className={`lg:hidden ${isMenuOpen ? 'block' : 'hidden'} px-4`}>
           {categories.map((category) => (
@@ -76,7 +83,7 @@ export default function Header({
               href={`/category/${categoryToURL(category.name)}`}
               className={`block px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis ${
                 isActive(categoryToURL(category.name))
-                  ? 'font-bold text-primary'
+                  ? 'font-bold '
                   : 'hover:text-hover'
               } text-sm uppercase`}
               style={{ minWidth: '120px', maxWidth: '180px' }}

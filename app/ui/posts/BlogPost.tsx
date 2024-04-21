@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import { Post } from '../lib/interfaces';
-import { extractFirstParagraph } from '../lib/utils';
+import { Post } from '../../lib/interfaces';
+import { extractFirstParagraph } from '../../lib/utils';
 import Link from 'next/link';
-import { getPostSlug } from '../lib/data';
+import { getPostSlug } from '../../lib/data';
 
 export default function BlogPost({
   post,
@@ -26,7 +26,7 @@ export default function BlogPost({
                 alt={post.title}
                 width={600}
                 height={350}
-                className='rounded object-cover'
+                className='rounded object-cover transition-transform duration-300 ease-in-out hover:scale-105'
                 priority={isFeatured}
               />
             </Link>
@@ -40,7 +40,7 @@ export default function BlogPost({
                 {post.title}
               </h2>
             </Link>
-            <p className='text-gray-700'>{firstParagraph}</p>
+            <p>{firstParagraph}</p>
           </div>
         </div>
       </div>
@@ -56,7 +56,7 @@ export default function BlogPost({
                 alt={post.title}
                 width={550}
                 height={250}
-                className='rounded object-cover'
+                className='rounded object-cover transition-transform duration-300 ease-in-out hover:scale-105'
                 priority={isFeatured}
               />
             </Link>
@@ -70,7 +70,7 @@ export default function BlogPost({
                 {post.title}
               </h2>
             </Link>
-            <p className='text-gray-700'>{firstParagraph}</p>
+            <p>{firstParagraph}</p>
           </div>
         </div>
       </div>

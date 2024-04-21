@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
-import { Spinner } from '../../loaders';
+import { Spinner } from '../../common/loaders';
 
 export default function Editor({
   setContentHandler,

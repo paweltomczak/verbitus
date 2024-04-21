@@ -1,4 +1,4 @@
-import { Spinner } from '@/app/ui/loaders';
+import { Spinner } from '@/app/ui/common/loaders';
 import { PostDetails } from '@/app/ui/posts/PostDetails';
 import { Suspense } from 'react';
 

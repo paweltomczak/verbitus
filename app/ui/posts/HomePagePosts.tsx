@@ -1,6 +1,6 @@
 import { fetchPosts } from '@/app/lib/data';
 import { Post } from '@/app/lib/interfaces';
-import BlogPost from '../BlogPost';
+import BlogPost from './BlogPost';
 
 export const HomePagePosts = async () => {
   const posts = (await fetchPosts()) as Post[];

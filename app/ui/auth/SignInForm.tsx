@@ -1,20 +1,20 @@
 'use client';
 
-import Link from 'next/link';
-import Message from '@/app/ui/Message';
-import Button from './Button';
+import Button from '../common/Button';
 import { useFormState } from 'react-dom';
-import { SignUpUser } from '@/app/lib/actions';
+import { SignInUser } from '@/app/lib/actions';
+import Message from '../dashboard/Message';
+import Link from 'next/link';
 
-export default function SignUpForm() {
-  const [message, dispatch] = useFormState(SignUpUser, undefined);
+export default function SignInForm() {
+  const [message, dispatch] = useFormState(SignInUser, undefined);
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
       <div className='max-w-md w-full space-y-8'>
         <div>
           <h2 className='mt-6 text-center text-3xl font-bold font-poppins text-gray-900'>
-            Create a new account
+            Sign In into your account
           </h2>
         </div>
         <form action={dispatch} className='w-full max-w-md'>
@@ -38,15 +38,15 @@ export default function SignUpForm() {
           </div>
 
           <div className='flex items-center justify-between'>
-            <Button>Sign In</Button>
+            <Button>Log In</Button>
           </div>
         </form>
         <div>
           <Link
-            href='/signin'
+            href='/signup'
             className='font-medium text-indigo-600 hover:text-indigo-500'
           >
-            Already have an account? Sign In
+            Doesn&apos;t have an account? Sign Up
           </Link>
         </div>
         {message?.message && (
@@ -54,7 +54,7 @@ export default function SignUpForm() {
             message={message.message}
             type={message.type as 'success' | 'error'}
           />
-        )}
+        )}{' '}
       </div>
     </div>
   );
