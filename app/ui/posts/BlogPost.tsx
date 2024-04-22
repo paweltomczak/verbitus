@@ -7,15 +7,17 @@ import { getPostSlug } from '../../lib/data';
 export default function BlogPost({
   post,
   isFeatured = false,
+  query,
 }: {
   post: Post;
   isFeatured?: boolean;
+  query: string;
 }) {
   const firstParagraph = extractFirstParagraph(post.content);
 
   const correctSlug = getPostSlug(post);
 
-  if (isFeatured) {
+  if (isFeatured && !query) {
     return (
       <div className='w-full mb-8 px-4'>
         <div className='flex flex-col md:flex-row items-center'>
