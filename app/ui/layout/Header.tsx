@@ -24,11 +24,11 @@ export default function Header({
   const menuRef = useRef<HTMLDivElement>(null);
 
   const isActive = (categoryName: string) => {
-    return pathname.includes(categoryName);
+    return pathname.includes(categoryToURL(categoryName));
   };
 
-  const handleIconClick = () => {
-    setShowInput(!showInput);
+  const handleCategoryClick = () => {
+    setIsMenuOpen(false);
   };
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function Header({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [searchRef, isMenuOpen]);
+  }, []);
 
   return (
     <header className='max-w-6xl mx-auto px-4'>
@@ -91,10 +91,11 @@ export default function Header({
                 href={`/category/${categoryToURL(category.name)}`}
                 className={`px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis ${
                   isActive(categoryToURL(category.name))
-                    ? ' text-primary transition font-bold dark:text-body'
+                    ? 'text-primary transition font-bold dark:text-body'
                     : 'hover:text-hover'
                 } text-sm uppercase`}
                 style={{ minWidth: '120px', maxWidth: '180px' }}
+                onClick={handleCategoryClick}
               >
                 {category.name}
               </Link>
@@ -105,7 +106,10 @@ export default function Header({
             ref={searchRef}
             className={`flex justify-end ${showInput && 'flex-grow w-full'}`}
           >
-            <Search handleIconClick={handleIconClick} showInput={showInput} />
+            <Search
+              handleIconClick={() => setShowInput(!showInput)}
+              showInput={showInput}
+            />
           </div>
           <div className='ml-6'>
             <ThemeSwitcher theme={theme} />
@@ -124,7 +128,7 @@ export default function Header({
                   ? 'font-bold '
                   : 'hover:text-hover'
               } text-sm uppercase`}
-              style={{ minWidth: '120px', maxWidth: '180px' }}
+              onClick={handleCategoryClick}
             >
               {category.name}
             </Link>
