@@ -1,5 +1,7 @@
 import { fetchPostById, getIdFromSlug } from '@/app/lib/data';
+import { stringToURL } from '@/app/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 export const PostDetails = async ({ slug }: { slug: string }) => {
@@ -20,11 +22,22 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
             src={post.image_url}
             alt={post.title}
             fill={true}
-            className='md:pb-10 object-cover'
+            className='md:pb-5 object-cover'
           />
         </div>
-        <div className='max-w-4xl mx-auto px-4 text-center mt-6'>
+        <div className='max-w-4xl mx-auto px-4 text-center my-6'>
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          <div className='p-5 mt-5'>
+            {post.tags.map((tag, index) => (
+              <Link
+                href={`/tag/${stringToURL(tag)}`}
+                key={index}
+                className='inline-block bg-primary dark:bg-body dark:text-primary text-body text-sm font-semibold mr-3 mb-3 px-5 py-2 rounded-full hover:bg-hover dark:hover:bg-hover'
+              >
+                {tag}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     );

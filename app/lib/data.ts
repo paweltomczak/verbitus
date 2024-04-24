@@ -55,6 +55,30 @@ export async function fetchPostsByCategoryAndSearch(
   }
 }
 
+export async function fetchPostsByTagsAndSearch(
+  tag: string,
+  searchQuery: string = ''
+) {
+  try {
+    const searchPattern = `%${searchQuery}%`;
+    const normalizedTag = tag.toLowerCase().replace(/[\s\-]/g, '');
+
+    const { rows } = await sql`
+      SELECT * FROM posts
+      WHERE EXISTS (
+        SELECT 1 FROM jsonb_array_elements_text(tags) AS t(tag)
+        WHERE lower(regexp_replace(regexp_replace(t.tag, '[-\\s]', '', 'g'), '[^\\w]', '', 'g')) = ${normalizedTag}
+      )
+      AND (title LIKE ${searchPattern} OR content LIKE ${searchPattern})
+      ORDER BY created_at DESC`;
+    return rows;
+  } catch (error) {
+    throw new Error(
+      `Failed to fetch posts with tag '${tag}' and search query '${searchQuery}'.`
+    );
+  }
+}
+
 export async function fetchTags(): Promise<{ id: number; name: string }[]> {
   noStore();
 

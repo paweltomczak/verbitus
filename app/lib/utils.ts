@@ -9,14 +9,14 @@ export const extractFirstParagraph = (htmlContent: string): string => {
   return match ? match[1].replace(/<[^>]*>/g, '').trim() : '';
 };
 
-export const categoryToURL = (category: string) => {
-  return category
+export const stringToURL = (string: string) => {
+  return string
     .toLowerCase()
     .replace(/ /g, '-')
     .replace(/[^\w-]+/g, '');
 };
 
-export const urlToCategory = (url: string) => {
+export const urlToString = (url: string) => {
   return url
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))

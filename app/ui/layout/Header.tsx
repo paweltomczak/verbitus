@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Bars3BottomLeftIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { kanit } from '../styles/fonts';
 import Link from 'next/link';
-import { categoryToURL } from '../../lib/utils';
+import { stringToURL } from '../../lib/utils';
 import { usePathname } from 'next/navigation';
 import { ThemeSwitcher } from './ThemeSwitcher';
 import { Theme } from '@/app/lib/interfaces';
@@ -24,7 +24,7 @@ export default function Header({
   const menuRef = useRef<HTMLDivElement>(null);
 
   const isActive = (categoryName: string) => {
-    return pathname.includes(categoryToURL(categoryName));
+    return pathname.includes(stringToURL(categoryName));
   };
 
   const handleCategoryClick = () => {
@@ -88,9 +88,9 @@ export default function Header({
             {categories.map((category) => (
               <Link
                 key={category.id}
-                href={`/category/${categoryToURL(category.name)}`}
+                href={`/category/${stringToURL(category.name)}`}
                 className={`px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis ${
-                  isActive(categoryToURL(category.name))
+                  isActive(stringToURL(category.name))
                     ? 'text-primary transition font-bold dark:text-body'
                     : 'hover:text-hover'
                 } text-sm uppercase`}
@@ -122,9 +122,9 @@ export default function Header({
           {categories.map((category) => (
             <Link
               key={category.id}
-              href={`/category/${categoryToURL(category.name)}`}
+              href={`/category/${stringToURL(category.name)}`}
               className={`block px-3 py-2 whitespace-nowrap overflow-hidden text-ellipsis ${
-                isActive(categoryToURL(category.name))
+                isActive(stringToURL(category.name))
                   ? 'font-bold '
                   : 'hover:text-hover'
               } text-sm uppercase`}

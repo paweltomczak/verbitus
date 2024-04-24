@@ -1,6 +1,5 @@
-import { fetchPostsByCategoryAndSearch } from '@/app/lib/data';
+import { fetchPostsByTagsAndSearch } from '@/app/lib/data';
 import { Post } from '@/app/lib/interfaces';
-import { urlToString } from '@/app/lib/utils';
 import { NoPostsFound } from '@/app/ui/common/NoPostsFound';
 import BlogPost from '@/app/ui/posts/BlogPost';
 
@@ -8,19 +7,15 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: { category: string };
+  params: { tag: string };
   searchParams: {
     query?: string;
     page?: string;
   };
 }) {
   const query = searchParams?.query || '';
-  const { category } = params;
-  const catString = urlToString(category);
-  const posts = (await fetchPostsByCategoryAndSearch(
-    catString,
-    query
-  )) as Post[];
+  const { tag } = params;
+  const posts = (await fetchPostsByTagsAndSearch(tag, query)) as Post[];
 
   if (posts.length === 0) {
     return <NoPostsFound />;
