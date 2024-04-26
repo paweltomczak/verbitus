@@ -42,7 +42,7 @@ export default function BlogPost({
                 {post.title}
               </h2>
             </Link>
-            <p>{firstParagraph}</p>
+            <p className='font-light'>{firstParagraph}</p>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@ export default function BlogPost({
                 {post.title}
               </h2>
             </Link>
-            <p>{firstParagraph}</p>
+            <p className='font-light'>{firstParagraph}</p>
           </div>
         </div>
       </div>

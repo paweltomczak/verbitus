@@ -81,7 +81,7 @@ export default function Header({
           </div>
 
           <div
-            className={`hidden flex-grow justify-center items-center space-x-4 ${
+            className={`hidden flex-grow justify-center items-center ${
               showInput ? 'hidden' : 'md:flex'
             }`}
           >
