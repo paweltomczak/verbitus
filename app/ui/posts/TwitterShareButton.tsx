@@ -28,6 +28,7 @@ export const TwitterShareButton = ({ hashtags }: TwitterShareProps) => {
         data-size='large'
         data-hashtags={hashtags
           .map((hashtag) => hashtag.replace(/[\s.]+/g, ''))
+          .slice(0, 5)
           .join(',')}
         data-show-count='true'
       />

@@ -16,7 +16,7 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
 
     return (
       <div className='w-full'>
-        <h1 className='text-3xl md:text-5xl text-center font-bold m-10'>
+        <h1 className='md:leading-tight tracking-tighter md:max-w-4xl md:mx-auto text-3xl md:text-5xl text-center font-bold m-10'>
           {post.title}
         </h1>
         <span className='flex items-center justify-center text-sm gap-2 font-light text-gray-400 pb-8'>
@@ -31,10 +31,13 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
             className='md:pb-5 object-cover'
           />
         </div>
-        <div className='max-w-4xl mx-auto px-4 text-left my-6 font-light'>
-          <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        <div className='max-w-3xl mx-auto px-6 text-left my-6 font-light'>
+          <div
+            className='leading-relaxed'
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
           <div className='py-5 mt-5 flex justify-between items-start'>
-            <div className='w-2/3'>
+            <div className='md:w-2/3'>
               {post.tags.map((tag, index) => (
                 <Link
                   href={`/tag/${stringToURL(tag)}`}

@@ -22,3 +22,13 @@ html {
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
 }
+
+strong {
+  font-weight: 900;
+}
+
+h3 {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  letter-spacing: -0.05rem;
+}
