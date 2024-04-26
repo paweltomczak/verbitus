@@ -48,6 +48,7 @@ export async function generateMetadata(
       twitter: {
         card: 'summary_large_image',
         images: post.image_url,
+        title: `${title} | Verbitus`,
       },
     };
   } else {
