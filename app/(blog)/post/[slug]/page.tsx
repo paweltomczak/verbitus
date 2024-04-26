@@ -45,6 +45,10 @@ export async function generateMetadata(
         publishedTime: post.created_at,
         images: post.image_url,
       },
+      twitter: {
+        card: 'summary_large_image',
+        images: post.image_url,
+      },
     };
   } else {
     return {
