@@ -1,13 +1,10 @@
 import { fetchPostById, getIdFromSlug } from '@/app/lib/data';
 import { stringToURL } from '@/app/lib/utils';
-import {
-  CalendarDaysIcon,
-  CalendarIcon,
-  TagIcon,
-} from '@heroicons/react/24/outline';
+import { CalendarDaysIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { TwitterShareButton } from './TwitterShareButton';
 
 export const PostDetails = async ({ slug }: { slug: string }) => {
   const id = getIdFromSlug(slug);
@@ -36,20 +33,19 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
         </div>
         <div className='max-w-4xl mx-auto px-4 text-left my-6 font-light'>
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
-          <div className='py-5 mt-5'>
-            <span className='flex items-center font-light gap-1 mb-4'>
-              <TagIcon className='w-5 h-5' />
-              Tags:
-            </span>
-            {post.tags.map((tag, index) => (
-              <Link
-                href={`/tag/${stringToURL(tag)}`}
-                key={index}
-                className='inline-block bg-primary dark:bg-body dark:text-primary text-body text-sm font-semibold mr-3 mb-3 px-5 py-2 rounded-full hover:bg-hover dark:hover:bg-hover'
-              >
-                {tag}
-              </Link>
-            ))}
+          <div className='py-5 mt-5 flex justify-between items-start'>
+            <div className='w-2/3'>
+              {post.tags.map((tag, index) => (
+                <Link
+                  href={`/tag/${stringToURL(tag)}`}
+                  key={index}
+                  className='inline-block bg-primary dark:bg-body dark:text-primary text-body text-sm font-semibold mr-3 mb-3 px-5 py-2 rounded-full hover:bg-hover dark:hover:bg-hover'
+                >
+                  {tag}
+                </Link>
+              ))}
+            </div>
+            <TwitterShareButton hashtags={post.tags} />
           </div>
         </div>
       </div>
