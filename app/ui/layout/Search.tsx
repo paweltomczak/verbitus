@@ -41,9 +41,10 @@ export const Search = ({
       {showInput && (
         <input
           ref={inputRef}
-          className='ml-10 md:pt-[5px] inset-0 w-full pr-10 text-sm outline-none bg-body dark:bg-primary'
+          className='ml-6 lg:ml-10 md:pt-[5px] inset-0 w-full pr-10 text-sm outline-none bg-body dark:bg-primary'
           placeholder='Search...'
           onChange={(e) => handleSearch(e.target.value)}
+          defaultValue={searchParams?.get('query') || undefined}
         />
       )}
       <div className='w-[24px] h-[24px] ml-auto'>

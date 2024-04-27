@@ -1,7 +1,8 @@
-import { fetchPostById, getIdFromSlug } from '@/app/lib/data';
+import { fetchPostById, fetchPostsPages, getIdFromSlug } from '@/app/lib/data';
 import { extractFirstParagraph } from '@/app/lib/utils';
 import { Spinner } from '@/app/ui/common/loaders';
 import { HomePagePosts } from '@/app/ui/posts/HomePagePosts';
+import { Pagination } from '@/app/ui/posts/Pagination';
 import { PostDetails } from '@/app/ui/posts/PostDetails';
 import { Metadata, ResolvingMetadata } from 'next';
 import { Suspense } from 'react';
@@ -60,17 +61,24 @@ export async function generateMetadata(
   }
 }
 
-export default function Page({ params, searchParams }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   const query = searchParams?.query || '';
+  const currentPage = Number(searchParams?.page) || 1;
+
   const { slug } = params;
+
+  const totalPages = await fetchPostsPages(query);
 
   return query.length === 0 ? (
     <Suspense fallback={<Spinner />}>
       <PostDetails slug={slug} />
     </Suspense>
   ) : (
-    <Suspense fallback={<Spinner />}>
-      <HomePagePosts query={query} />
-    </Suspense>
+    <>
+      <Suspense key={query + currentPage} fallback={<Spinner />}>
+        <HomePagePosts query={query} currentPage={currentPage} />
+      </Suspense>
+      <Pagination totalPages={totalPages} />
+    </>
   );
 }

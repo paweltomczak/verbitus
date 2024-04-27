@@ -68,7 +68,7 @@ export default function Header({
           </div>
 
           <div
-            className={`flex-1 lg:flex-none ${showInput && 'md:block hidden'}`}
+            className={`flex-1 lg:flex-none ${showInput && 'lg:block hidden'}`}
           >
             <div className='text-center lg:text-left h-full flex items-center justify-center'>
               <Link
@@ -81,8 +81,10 @@ export default function Header({
           </div>
 
           <div
-            className={`hidden flex-grow justify-center items-center ${
-              showInput ? 'hidden' : 'md:flex'
+            className={` ${
+              showInput
+                ? 'hidden'
+                : 'hidden lg:flex flex-grow justify-center items-center'
             }`}
           >
             {categories.map((category) => (
@@ -94,7 +96,6 @@ export default function Header({
                     ? 'text-primary transition font-bold dark:text-body'
                     : 'hover:text-hover'
                 } text-sm uppercase`}
-                style={{ minWidth: '120px', maxWidth: '180px' }}
                 onClick={handleCategoryClick}
               >
                 {category.name}
@@ -117,7 +118,7 @@ export default function Header({
         </div>
         <div
           ref={menuRef}
-          className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} px-4 pb-6`}
+          className={` ${isMenuOpen ? 'block' : 'hidden'} pb-6`}
         >
           {categories.map((category) => (
             <Link

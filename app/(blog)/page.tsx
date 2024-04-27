@@ -1,7 +1,9 @@
 import { Spinner } from '@/app/ui/common/loaders';
 import { Suspense } from 'react';
 import { HomePagePosts } from '../ui/posts/HomePagePosts';
-import { Metadata, ResolvedMetadata, ResolvingMetadata } from 'next';
+import { Metadata, ResolvingMetadata } from 'next';
+import { fetchPostsPages } from '../lib/data';
+import { Pagination } from '../ui/posts/Pagination';
 
 type Props = {
   searchParams?: {
@@ -26,10 +28,16 @@ export async function generateMetadata(
 
 export default async function Page({ searchParams }: Props) {
   const query = searchParams?.query || '';
+  const currentPage = Number(searchParams?.page) || 1;
+
+  const totalPages = await fetchPostsPages(query);
 
   return (
-    <Suspense fallback={<Spinner />}>
-      <HomePagePosts query={query} />
-    </Suspense>
+    <>
+      <Suspense key={query + currentPage} fallback={<Spinner />}>
+        <HomePagePosts query={query} currentPage={currentPage} />
+      </Suspense>
+      <Pagination totalPages={totalPages} />
+    </>
   );
 }

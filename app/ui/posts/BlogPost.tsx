@@ -19,9 +19,9 @@ export default function BlogPost({
 
   if (isFeatured && !query) {
     return (
-      <div className='w-full mb-4 sm:mb-8 px-4'>
-        <div className='flex flex-col sm:flex-row items-center'>
-          <div className='w-full sm:h-[300px] overflow-hidden'>
+      <div className='w-full mb-4 sm:mb-12 px-4'>
+        <div className='flex flex-col lg:flex-row items-center justify-center'>
+          <div className='lg:w-full overflow-hidden'>
             <Link href={`/post/${correctSlug}`}>
               <Image
                 src={post.image_url}
@@ -29,7 +29,7 @@ export default function BlogPost({
                 width={600}
                 height={350}
                 className='rounded object-cover transition-transform duration-300 ease-in-out hover:scale-105'
-                priority={isFeatured}
+                priority
               />
             </Link>
           </div>
@@ -51,15 +51,14 @@ export default function BlogPost({
     return (
       <div className='w-full md:w-1/2 mb-8 px-4'>
         <div className='flex flex-col items-center'>
-          <div className='relative w-full sm:h-[250px] overflow-hidden'>
+          <div className='relative w-full overflow-hidden'>
             <Link href={`/post/${correctSlug}`}>
               <Image
                 src={post.image_url}
                 alt={post.title}
                 width={550}
                 height={250}
-                className='rounded object-cover transition-transform duration-300 ease-in-out hover:scale-105'
-                priority={isFeatured}
+                className='max-h-[250px] rounded object-cover transition-transform duration-300 ease-in-out hover:scale-105'
               />
             </Link>
           </div>

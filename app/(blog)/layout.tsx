@@ -23,6 +23,14 @@ export default async function BlogLayout({
         crossOrigin='anonymous'
       />
       <Script async src='https://platform.twitter.com/widgets.js' />
+      <div id='fb-root'></div>
+      <Script
+        async
+        defer
+        crossOrigin='anonymous'
+        src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0'
+        nonce='IPpdCVyX'
+      />
     </>
   );
 }

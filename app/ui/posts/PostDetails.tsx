@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { TwitterShareButton } from './TwitterShareButton';
+import { FacebookShareButton } from './FacebookShareButton';
 
 export const PostDetails = async ({ slug }: { slug: string }) => {
   const id = getIdFromSlug(slug);
@@ -29,6 +30,7 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
             alt={post.title}
             fill={true}
             className='md:pb-5 object-cover'
+            priority
           />
         </div>
         <div className='max-w-3xl mx-auto px-6 text-left my-6 font-light'>
@@ -49,6 +51,7 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
               ))}
             </div>
             <TwitterShareButton hashtags={post.tags} />
+            <FacebookShareButton />
           </div>
         </div>
       </div>

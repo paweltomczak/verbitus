@@ -3,8 +3,14 @@ import { Post } from '@/app/lib/interfaces';
 import BlogPost from './BlogPost';
 import { NoPostsFound } from '../common/NoPostsFound';
 
-export const HomePagePosts = async ({ query }: { query: string }) => {
-  const posts = (await fetchPosts(query)) as Post[];
+export const HomePagePosts = async ({
+  query,
+  currentPage,
+}: {
+  query: string;
+  currentPage: number;
+}) => {
+  const posts = (await fetchPosts(query, currentPage)) as Post[];
 
   if (posts.length === 0) {
     return <NoPostsFound />;

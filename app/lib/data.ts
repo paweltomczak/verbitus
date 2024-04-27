@@ -2,8 +2,12 @@ import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
 import { Post } from './interfaces';
 
-export async function fetchPosts(query?: string) {
+const ITEMS_PER_PAGE = 5;
+
+export async function fetchPosts(query?: string, currentPage?: number) {
   noStore();
+
+  const offset = currentPage && (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
     if (query) {
@@ -13,15 +17,32 @@ export async function fetchPosts(query?: string) {
         '%' + query + '%'
       }
         ORDER BY created_at DESC
+        LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
       `;
       return rows;
     } else {
       const { rows } = await sql`
         SELECT * FROM posts
         ORDER BY created_at DESC
+        LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
       `;
       return rows;
     }
+  } catch (error) {
+    throw new Error('Failed to fetch posts.');
+  }
+}
+
+export async function fetchPostsPages(query: string) {
+  noStore();
+
+  try {
+    const { rows } = await sql`
+    SELECT COUNT(*) FROM posts
+    WHERE title ILIKE ${'%' + query + '%'} OR content ILIKE ${'%' + query + '%'}
+  `;
+    const totalPages = Math.ceil(Number(rows[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
   } catch (error) {
     throw new Error('Failed to fetch posts.');
   }
