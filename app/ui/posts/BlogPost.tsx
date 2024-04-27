@@ -51,7 +51,7 @@ export default function BlogPost({
     return (
       <div className='w-full md:w-1/2 mb-8 px-4'>
         <div className='flex flex-col items-center'>
-          <div className='relative w-full h-[250px] overflow-hidden'>
+          <div className='relative w-full sm:h-[250px] overflow-hidden'>
             <Link href={`/post/${correctSlug}`}>
               <Image
                 src={post.image_url}
