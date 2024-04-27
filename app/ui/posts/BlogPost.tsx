@@ -19,9 +19,9 @@ export default function BlogPost({
 
   if (isFeatured && !query) {
     return (
-      <div className='w-full mb-8 px-4'>
-        <div className='flex flex-col md:flex-row items-center'>
-          <div className='relative w-full md:w-1/2 h-[300px] overflow-hidden'>
+      <div className='w-full mb-4 sm:mb-8 px-4'>
+        <div className='flex flex-col sm:flex-row items-center'>
+          <div className='w-full sm:h-[300px] overflow-hidden'>
             <Link href={`/post/${correctSlug}`}>
               <Image
                 src={post.image_url}
@@ -33,12 +33,12 @@ export default function BlogPost({
               />
             </Link>
           </div>
-          <div className='p-4 md:px-8 md:pt-8 w-full md:w-1/2'>
+          <div className='p-4 md:px-8 md:pt-4 w-full'>
             <div className='text-sm uppercase text-gray-500'>
               {post.category}
             </div>
             <Link href={`/post/${correctSlug}`}>
-              <h2 className='font-[900] text-3xl md:text-5xl my-4 tracking-tighter hover:text-hover'>
+              <h2 className='font-[900] text-3xl md:text-4xl my-4 tracking-tighter hover:text-hover'>
                 {post.title}
               </h2>
             </Link>

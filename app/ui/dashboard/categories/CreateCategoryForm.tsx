@@ -9,7 +9,7 @@ export default function CreateCategoryForm() {
   const [state, dispatchCategory] = useFormState(createCategory, undefined);
   return (
     <div>
-      <form action={dispatchCategory}>
+      <form action={dispatchCategory} key={state?.resetKey}>
         <input
           type='text'
           name='category'

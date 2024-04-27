@@ -27,6 +27,7 @@ export default function EditPostForm({
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
     post.category
   );
+  const [imageSelected, setImageSelected] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -55,13 +56,7 @@ export default function EditPostForm({
     }
 
     const result = await updatePost(post.id, undefined, formData);
-    if (result.type === 'success') {
-      setTitle('');
-      setContent('');
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
-    }
+
     return { message: result.message, type: result.type };
   }
 
@@ -81,7 +76,12 @@ export default function EditPostForm({
         defaultValue={title}
       />
       <Editor setContentHandler={setContentHandler} content={content} />
-      <ImageUload fileInputRef={fileInputRef} imageUrl={post.image_url} />
+      <ImageUload
+        fileInputRef={fileInputRef}
+        imageUrl={post.image_url}
+        imageSelected={imageSelected}
+        setImageSelected={setImageSelected}
+      />
       <CategorySelect
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}

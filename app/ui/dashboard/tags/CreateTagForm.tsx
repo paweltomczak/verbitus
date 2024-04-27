@@ -9,7 +9,7 @@ export default function CreateTagForm() {
   const [state, dispatchTag] = useFormState(createTag, undefined);
   return (
     <div>
-      <form action={dispatchTag}>
+      <form action={dispatchTag} key={state?.resetKey}>
         <input
           type='text'
           name='tag'

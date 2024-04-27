@@ -18,12 +18,28 @@ export default function Editor({
     []
   );
 
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' },
+      ],
+      ['link', 'image'],
+      ['clean'],
+    ],
+  };
+
   return (
     <ReactQuill
       style={{ height: '250px', display: 'inline-block', width: '100%' }}
       theme='snow'
       value={content}
       onChange={setContentHandler}
+      modules={modules}
     />
   );
 }

@@ -4,11 +4,14 @@ import { useState } from 'react';
 export default function ImageUload({
   fileInputRef,
   imageUrl,
+  imageSelected,
+  setImageSelected,
 }: {
   fileInputRef: React.RefObject<HTMLInputElement>;
   imageUrl?: string;
+  imageSelected: boolean;
+  setImageSelected: (imageSelected: boolean) => void;
 }) {
-  const [fileSelected, setFileSelected] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,14 +19,14 @@ export default function ImageUload({
     if (file && file.type.startsWith('image/')) {
       const url = URL.createObjectURL(file);
       setImagePreviewUrl(url);
-      setFileSelected(true);
+      setImageSelected(true);
     } else {
       setImagePreviewUrl('');
-      setFileSelected(true);
+      setImageSelected(true);
     }
   };
 
-  const imageSrc = fileSelected ? imagePreviewUrl : imageUrl;
+  const imageSrc = imageSelected ? imagePreviewUrl : imageUrl;
 
   return (
     <div className='flex items-center'>

@@ -265,14 +265,24 @@ export async function createTag(
 ) {
   const tag = formData.get('tag') as string;
 
-  if (!tag)
+  if (!tag) {
     return {
       message: 'Please enter a tag',
       type: 'error',
     };
+  }
 
   try {
-    await sql`INSERT INTO tags (name) VALUES (${tag}) ON CONFLICT (name) DO NOTHING;`;
+    const existingTag = await sql`SELECT name FROM tags WHERE name = ${tag}`;
+
+    if (existingTag.rowCount > 0) {
+      return {
+        message: 'A tag with this name already exists.',
+        type: 'error',
+      };
+    }
+
+    await sql`INSERT INTO tags (name) VALUES (${tag})`;
 
     revalidatePath('/dashboard/tags');
     revalidatePath('/dashboard/posts/create');
@@ -281,8 +291,10 @@ export async function createTag(
     return {
       message: 'Tag created successfully',
       type: 'success',
+      resetKey: Date.now().toString(),
     };
   } catch (error: any) {
+    console.error('Error creating tag:', error);
     return {
       message: 'Failed to create tag. Please try again.',
       type: 'error',
@@ -335,7 +347,17 @@ export async function createCategory(
     };
 
   try {
-    await sql`INSERT INTO categories (name) VALUES (${category}) ON CONFLICT (name) DO NOTHING;`;
+    const result =
+      await sql`SELECT name FROM categories WHERE name = ${category}`;
+
+    if (result.rowCount > 0) {
+      return {
+        message: 'A category with this name already exists.',
+        type: 'error',
+      };
+    }
+
+    await sql`INSERT INTO categories (name) VALUES (${category})`;
 
     revalidatePath('/dashboard/categories');
     revalidatePath('/dashboard/posts/create');
@@ -344,6 +366,7 @@ export async function createCategory(
     return {
       message: 'Category created successfully',
       type: 'success',
+      resetKey: Date.now().toString(),
     };
   } catch (error: any) {
     console.log(error);

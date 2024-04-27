@@ -22,6 +22,8 @@ export default function CreatePostForm({
   const [content, setContent] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>();
+  const [imageSelected, setImageSelected] = useState(false);
+
   const fileInputRef = useRef(null);
 
   const setContentHandler = (value: string) => {
@@ -45,6 +47,9 @@ export default function CreatePostForm({
     if (result.type === 'success') {
       setTitle('');
       setContent('');
+      setTags([]);
+      setSelectedCategory('');
+      setImageSelected(false);
       if (fileInputRef.current) {
         (fileInputRef.current as HTMLInputElement).value = '';
       }
@@ -68,7 +73,11 @@ export default function CreatePostForm({
         onChange={(e) => setTitle(e.target.value)}
       />
       <Editor setContentHandler={setContentHandler} content={content} />
-      <ImageUload fileInputRef={fileInputRef} />
+      <ImageUload
+        fileInputRef={fileInputRef}
+        imageSelected={imageSelected}
+        setImageSelected={setImageSelected}
+      />
       <CategorySelect
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
