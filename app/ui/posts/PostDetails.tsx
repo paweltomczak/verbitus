@@ -9,6 +9,7 @@ import { FacebookShareButton } from './FacebookShareButton';
 
 export const PostDetails = async ({ slug }: { slug: string }) => {
   const id = getIdFromSlug(slug);
+  const siteURL = process.env.SITE_URL;
 
   if (id === undefined) notFound();
 
@@ -51,7 +52,7 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
               ))}
             </div>
             <TwitterShareButton hashtags={post.tags} />
-            <FacebookShareButton />
+            <FacebookShareButton siteURL={siteURL} />
           </div>
         </div>
       </div>

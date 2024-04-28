@@ -9,9 +9,11 @@ declare global {
   }
 }
 
-const siteURL = 'https://www.verbitus.com/';
-
-export const FacebookShareButton = () => {
+export const FacebookShareButton = ({
+  siteURL,
+}: {
+  siteURL: string | undefined;
+}) => {
   const pathname = usePathname();
 
   useEffect(() => {
