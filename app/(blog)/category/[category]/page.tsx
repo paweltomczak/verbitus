@@ -1,9 +1,8 @@
-import { fetchPostsByCategoryAndSearch } from '@/app/lib/data';
-import { Post } from '@/app/lib/interfaces';
 import { urlToString } from '@/app/lib/utils';
-import { NoPostsFound } from '@/app/ui/common/NoPostsFound';
-import BlogPost from '@/app/ui/posts/BlogPost';
+import { CategoryAndTagsPostsSkeleton } from '@/app/ui/common/loaders';
+import { CategoryPosts } from '@/app/ui/posts/CategoryPosts';
 import { Metadata, ResolvingMetadata } from 'next';
+import { Suspense } from 'react';
 
 type PageProps = {
   params: {
@@ -36,21 +35,15 @@ export async function generateMetadata(
 export default async function Page({ params, searchParams }: PageProps) {
   const query = searchParams?.query || '';
   const { category } = params;
-  const catString = urlToString(category);
-  const posts = (await fetchPostsByCategoryAndSearch(
-    catString,
-    query
-  )) as Post[];
-
-  if (posts.length === 0) {
-    return <NoPostsFound />;
-  }
 
   return (
-    <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6 flex flex-wrap'>
-      {posts.map((post) => (
-        <BlogPost key={post.id} post={post} query={query} />
-      ))}
-    </div>
+    <>
+      <Suspense
+        key={query + category}
+        fallback={<CategoryAndTagsPostsSkeleton />}
+      >
+        <CategoryPosts query={query} category={category} />
+      </Suspense>
+    </>
   );
 }

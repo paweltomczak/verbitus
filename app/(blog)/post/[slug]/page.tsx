@@ -1,6 +1,9 @@
 import { fetchPostById, fetchPostsPages, getIdFromSlug } from '@/app/lib/data';
 import { extractFirstParagraph } from '@/app/lib/utils';
-import { Spinner } from '@/app/ui/common/loaders';
+import {
+  PostDetailsSkeleton,
+  PostSearchSkeletons,
+} from '@/app/ui/common/loaders';
 import { HomePagePosts } from '@/app/ui/posts/HomePagePosts';
 import { Pagination } from '@/app/ui/posts/Pagination';
 import { PostDetails } from '@/app/ui/posts/PostDetails';
@@ -70,12 +73,12 @@ export default async function Page({ params, searchParams }: PageProps) {
   const totalPages = await fetchPostsPages(query);
 
   return query.length === 0 ? (
-    <Suspense fallback={<Spinner />}>
+    <Suspense fallback={<PostDetailsSkeleton />}>
       <PostDetails slug={slug} />
     </Suspense>
   ) : (
     <>
-      <Suspense key={query + currentPage} fallback={<Spinner />}>
+      <Suspense key={query + currentPage} fallback={<PostSearchSkeletons />}>
         <HomePagePosts query={query} currentPage={currentPage} />
       </Suspense>
       <Pagination totalPages={totalPages} />

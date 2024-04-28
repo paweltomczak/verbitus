@@ -12,6 +12,8 @@ const config: Config = {
         body: '#FEFBF6',
         primary: '#222831',
         hover: '#5A96E3',
+        skeleton: '#ECE9E4',
+        darkSkeleton: '#2F3640',
       },
       borderWidth: {
         6: '6px',

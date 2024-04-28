@@ -1,4 +1,4 @@
-import { Spinner } from '@/app/ui/common/loaders';
+import { HomePageSkeletons, Spinner } from '@/app/ui/common/loaders';
 import { Suspense } from 'react';
 import { HomePagePosts } from '../ui/posts/HomePagePosts';
 import { Metadata, ResolvingMetadata } from 'next';
@@ -34,7 +34,7 @@ export default async function Page({ searchParams }: Props) {
 
   return (
     <>
-      <Suspense key={query + currentPage} fallback={<Spinner />}>
+      <Suspense key={query + currentPage} fallback={<HomePageSkeletons />}>
         <HomePagePosts query={query} currentPage={currentPage} />
       </Suspense>
       <Pagination totalPages={totalPages} />

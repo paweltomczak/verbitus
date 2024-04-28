@@ -30,7 +30,7 @@ export const Search = ({
       params.delete('query');
     }
     replace(`${pathname}?${params.toString()}`);
-  }, 700);
+  }, 300);
 
   return (
     <div

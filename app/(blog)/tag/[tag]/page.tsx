@@ -1,9 +1,8 @@
-import { fetchPostsByTagsAndSearch } from '@/app/lib/data';
-import { Post } from '@/app/lib/interfaces';
 import { urlToString } from '@/app/lib/utils';
-import { NoPostsFound } from '@/app/ui/common/NoPostsFound';
-import BlogPost from '@/app/ui/posts/BlogPost';
+import { CategoryAndTagsPostsSkeleton } from '@/app/ui/common/loaders';
+import { TagPosts } from '@/app/ui/posts/TagPosts';
 import { Metadata, ResolvingMetadata } from 'next';
+import { Suspense } from 'react';
 
 type PageProps = {
   params: {
@@ -36,17 +35,12 @@ export async function generateMetadata(
 export default async function Page({ params, searchParams }: PageProps) {
   const query = searchParams?.query || '';
   const { tag } = params;
-  const posts = (await fetchPostsByTagsAndSearch(tag, query)) as Post[];
-
-  if (posts.length === 0) {
-    return <NoPostsFound />;
-  }
 
   return (
-    <div className='max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6 flex flex-wrap'>
-      {posts.map((post) => (
-        <BlogPost key={post.id} post={post} query={query} />
-      ))}
-    </div>
+    <>
+      <Suspense key={query + tag} fallback={<CategoryAndTagsPostsSkeleton />}>
+        <TagPosts query={query} tag={tag} />
+      </Suspense>
+    </>
   );
 }
