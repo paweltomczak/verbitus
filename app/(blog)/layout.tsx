@@ -3,6 +3,7 @@ import { fetchCategories } from '../lib/data';
 import Header from '../ui/layout/Header';
 import Script from 'next/script';
 import { Footer } from '../ui/layout/Footer';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 export default async function BlogLayout({
   children,
@@ -31,6 +32,7 @@ export default async function BlogLayout({
         src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0'
         nonce='IPpdCVyX'
       />
+      <GoogleAnalytics gaId={`${process.env.GOOGLE_ANALYTICS_ID}`} />
     </>
   );
 }
