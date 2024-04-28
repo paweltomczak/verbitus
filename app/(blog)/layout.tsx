@@ -33,6 +33,10 @@ export default async function BlogLayout({
         nonce='IPpdCVyX'
       />
       <GoogleAnalytics gaId={`${process.env.GOOGLE_ANALYTICS_ID}`} />
+      <Script
+        src={`https://cdn-cookieyes.com/client_data/${process.env.COOKIE_YES_ID}/script.js`}
+        strategy='beforeInteractive'
+      />
     </>
   );
 }
