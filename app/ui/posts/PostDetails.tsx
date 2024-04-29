@@ -18,14 +18,14 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
 
     return (
       <div className='w-full'>
-        <h1 className='md:leading-tight tracking-tighter md:max-w-4xl md:mx-auto text-3xl md:text-5xl text-center font-bold m-10'>
+        <h1 className='md:leading-tight tracking-tighter md:max-w-3xl md:mx-auto text-3xl md:text-5xl text-center font-bold m-10'>
           {post.title}
         </h1>
         <span className='flex items-center justify-center text-sm gap-2 font-light text-gray-400 pb-8'>
           <CalendarDaysIcon className='w-5 h-5 -mt-[2px]' />
           {new Date(post.created_at).toLocaleDateString()}
         </span>
-        <div className='relative w-full h-[200px] md:h-[400px]'>
+        <div className='relative max-w-3xl m-auto h-[200px] md:h-[400px]'>
           <Image
             src={post.image_url}
             alt={post.title}
@@ -34,7 +34,7 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
             priority
           />
         </div>
-        <div className='max-w-3xl mx-auto px-6 text-left my-6 font-light'>
+        <div className='max-w-3xl mx-auto lg:px-0 px-6 text-left my-6 font-light'>
           <div
             className='leading-relaxed'
             dangerouslySetInnerHTML={{ __html: post.content }}

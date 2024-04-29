@@ -16,4 +16,8 @@ export type Post = {
   category: string;
 };
 
+export type Posts = {
+  posts: Post[];
+};
+
 export type Theme = 'dark' | 'light';
