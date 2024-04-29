@@ -8,7 +8,7 @@ export const HomePagePosts = async ({
   currentPage,
 }: {
   query: string;
-  currentPage: number;
+  currentPage?: number;
 }) => {
   const posts = (await fetchPosts(query, currentPage)) as Post[];
 
