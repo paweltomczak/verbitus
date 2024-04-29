@@ -47,7 +47,7 @@ export const PostSearchSkeletons = () => {
 export const PostDetailsSkeleton = () => {
   return (
     <div className='w-full'>
-      <div className='relative overflow-hidden md:leading-tight tracking-tighter md:max-w-4xl md:mx-auto text-3xl md:text-5xl text-center font-bold m-10'>
+      <div className='relative overflow-hidden md:leading-tight tracking-tighter md:max-w-3xl md:mx-auto text-3xl md:text-5xl text-center font-bold m-10'>
         <div className='h-12 bg-skeleton dark:bg-darkSkeleton rounded w-full mx-auto mb-6'></div>
         <div className='h-12 bg-skeleton dark:bg-darkSkeleton rounded w-3/4 mx-auto'></div>
         <div className='shimmer'></div>
@@ -57,11 +57,11 @@ export const PostDetailsSkeleton = () => {
         <div className='h-5 bg-skeleton dark:bg-darkSkeleton rounded w-24'></div>
         <div className='shimmer dark:dark-shimmer'></div>
       </div>
-      <div className='relative w-full h-[200px] md:h-[380px] bg-skeleton dark:bg-darkSkeleton overflow-hidden'>
+      <div className='relative max-w-3xl m-auto h-[200px] md:h-[380px] bg-skeleton dark:bg-darkSkeleton overflow-hidden'>
         <div className='shimmer dark:dark-shimmer'></div>
       </div>
-      <div className='max-w-3xl mx-auto px-6 text-left mt-12 font-light'>
-        <div className='relative leading-relaxed overflow-hidden mb-10'>
+      <div className='max-w-3xl mx-auto lg:px-0 px-6 text-left my-6 font-light'>
+        <div className='relative leading-relaxed overflow-hidden mb-10 mt-12'>
           <div className='h-6 bg-skeleton dark:bg-darkSkeleton rounded w-full mb-4'></div>
           <div className='h-6 bg-skeleton dark:bg-darkSkeleton rounded w-5/6 mb-4'></div>
           <div className='h-6 bg-skeleton dark:bg-darkSkeleton rounded w-2/3'></div>
