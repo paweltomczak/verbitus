@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { sql } from '@vercel/postgres';
 import bcryptjs from 'bcryptjs';
 import { AuthError } from 'next-auth';
@@ -136,6 +136,7 @@ export async function createPost(
       RETURNING *;
     `;
 
+    revalidateTag('posts');
     revalidatePath('/dashboard/posts');
 
     return {
@@ -211,6 +212,7 @@ export async function updatePost(
 
     await sql.query(query, parameters);
 
+    revalidateTag('postId');
     revalidatePath('/dashboard/posts');
 
     return {
@@ -249,6 +251,7 @@ export async function deletePost(postId: number) {
       };
     }
 
+    revalidateTag('posts');
     revalidatePath('/dashboard/posts');
   } catch (error: any) {
     console.log(error);
@@ -284,6 +287,7 @@ export async function createTag(
 
     await sql`INSERT INTO tags (name) VALUES (${tag})`;
 
+    revalidateTag('tags');
     revalidatePath('/dashboard/tags');
     revalidatePath('/dashboard/posts/create');
     revalidatePath('/dashboard/posts/[id]/edit', 'page');
@@ -317,6 +321,7 @@ export async function deleteTag(tagId: number) {
       };
     }
 
+    revalidateTag('tags');
     revalidatePath('/dashboard/tags');
     revalidatePath('/dashboard/posts/create');
     revalidatePath('/dashboard/posts/[id]/edit', 'page');
@@ -359,6 +364,7 @@ export async function createCategory(
 
     await sql`INSERT INTO categories (name) VALUES (${category})`;
 
+    revalidateTag('categories');
     revalidatePath('/dashboard/categories');
     revalidatePath('/dashboard/posts/create');
     revalidatePath('/dashboard/posts/[id]/edit', 'page');
@@ -392,6 +398,7 @@ export async function deleteCategory(categoryId: number) {
       };
     }
 
+    revalidateTag('categories');
     revalidatePath('/dashboard/categories');
     revalidatePath('/dashboard/posts/create');
     revalidatePath('/dashboard/posts/[id]/edit', 'page');

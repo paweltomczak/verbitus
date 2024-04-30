@@ -35,11 +35,13 @@ export async function generateMetadata(
   if (id) {
     const post = await fetchPostById(id);
     const firstParagraph = extractFirstParagraph(post.content);
-    const title = query.length === 0 ? post.title : `${query} - Search results`;
+    const title = post.title;
     const description = query.length === 0 ? firstParagraph : parentDescription;
 
     return {
-      title: title,
+      title: {
+        absolute: title,
+      },
       description: description,
       keywords: query.length === 0 ? post.tags : parentKeywords,
       openGraph: {
@@ -52,7 +54,7 @@ export async function generateMetadata(
       twitter: {
         card: 'summary_large_image',
         images: post.image_url,
-        title: `${title} | Verbitus`,
+        title: title,
       },
     };
   } else {

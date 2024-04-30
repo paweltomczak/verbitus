@@ -1,4 +1,4 @@
-import { HomePageSkeletons, Spinner } from '@/app/ui/common/loaders';
+import { HomePageSkeletons } from '@/app/ui/common/loaders';
 import { Suspense } from 'react';
 import { HomePagePosts } from '../ui/posts/HomePagePosts';
 import { Metadata, ResolvingMetadata } from 'next';
@@ -19,10 +19,7 @@ export async function generateMetadata(
   const query = searchParams?.query || '';
   const previousTitle = (await parent).title || '';
   return {
-    title:
-      query.length === 0
-        ? previousTitle
-        : `${query} - Search results | Verbitus`,
+    title: query.length === 0 ? previousTitle : `${query} - Search results`,
   };
 }
 

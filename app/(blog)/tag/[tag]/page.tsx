@@ -26,7 +26,9 @@ export async function generateMetadata(
   const stringTag = urlToString(tag);
 
   return {
-    title: `${stringTag} - ${parentTitle}`,
+    title: {
+      absolute: `${stringTag} - ${parentTitle}`,
+    },
     description: `${stringTag} - ${parentDescription}`,
     keywords: [stringTag, ...parentKeywords],
   };

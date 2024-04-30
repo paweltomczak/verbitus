@@ -15,10 +15,7 @@ export async function generateMetadata({
 }: Props): Promise<Metadata> {
   const query = searchParams?.query || '';
   return {
-    title:
-      query.length === 0
-        ? 'Privacy Policy | Verbitus'
-        : `${query} - Search results | Verbitus`,
+    title: query.length === 0 ? 'Privacy Policy' : `${query} - Search results`,
   };
 }
 
