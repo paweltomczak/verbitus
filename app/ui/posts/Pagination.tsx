@@ -58,7 +58,7 @@ const PaginationArrow = ({
   return isDiabled ? (
     <div className='text-gray-300 dark:text-gray-600'>{arrowIcon}</div>
   ) : (
-    <Link href={href} className='hover:text-hover'>
+    <Link href={href} className='hover:text-hover' aria-label='Move to Page'>
       {arrowIcon}
     </Link>
   );

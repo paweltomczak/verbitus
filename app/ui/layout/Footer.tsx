@@ -1,8 +1,18 @@
+'use client';
+
 import Link from 'next/link';
 import React from 'react';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
+
+  const handleOnClick = () => {
+    if (window.revisitCkyConsent) {
+      window.revisitCkyConsent();
+    } else {
+      console.error('revisitCkyConsent function not found');
+    }
+  };
 
   return (
     <footer className='bg-primary text-body p-12 mt-10'>
@@ -16,6 +26,11 @@ export const Footer = () => {
           <li>
             <Link href='/privacy' className='hover:text-hover'>
               Privacy Policy
+            </Link>
+          </li>
+          <li>
+            <Link href='javascript:void(0)' onClick={handleOnClick}>
+              Do Not Sell or Share My Personal Information
             </Link>
           </li>
         </ul>

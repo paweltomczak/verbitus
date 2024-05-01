@@ -8,6 +8,7 @@ import { HomePagePosts } from '@/app/ui/posts/HomePagePosts';
 import { Pagination } from '@/app/ui/posts/Pagination';
 import { PostDetails } from '@/app/ui/posts/PostDetails';
 import { Metadata, ResolvingMetadata } from 'next';
+import Script from 'next/script';
 import { Suspense } from 'react';
 
 type PageProps = {
@@ -74,16 +75,30 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   const totalPages = await fetchPostsPages(query);
 
-  return query.length === 0 ? (
-    <Suspense fallback={<PostDetailsSkeleton />}>
-      <PostDetails slug={slug} />
-    </Suspense>
-  ) : (
+  return (
     <>
-      <Suspense key={query + currentPage} fallback={<PostSearchSkeletons />}>
-        <HomePagePosts query={query} currentPage={currentPage} />
-      </Suspense>
-      <Pagination totalPages={totalPages} />
+      {query.length === 0 ? (
+        <Suspense fallback={<PostDetailsSkeleton />}>
+          <PostDetails slug={slug} />
+        </Suspense>
+      ) : (
+        <>
+          <Suspense
+            key={query + currentPage}
+            fallback={<PostSearchSkeletons />}
+          >
+            <HomePagePosts query={query} currentPage={currentPage} />
+          </Suspense>
+          <Pagination totalPages={totalPages} />
+        </>
+      )}
+      <div id='fb-root'></div>
+      <Script
+        defer
+        crossOrigin='anonymous'
+        src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0'
+        nonce='IPpdCVyX'
+      />
     </>
   );
 }

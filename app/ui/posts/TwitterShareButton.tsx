@@ -10,7 +10,7 @@ export const TwitterShareButton = ({ hashtags }: TwitterShareProps) => {
   useEffect(() => {
     const s = document.createElement('script');
     s.setAttribute('src', 'https://platform.twitter.com/widgets.js');
-    s.setAttribute('async', 'true');
+    s.setAttribute('defer', 'true');
     document.head.appendChild(s);
   }, []);
 

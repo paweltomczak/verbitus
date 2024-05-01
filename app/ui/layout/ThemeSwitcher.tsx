@@ -14,7 +14,11 @@ export const ThemeSwitcher = ({ theme }: { theme: Theme }) => {
   };
 
   return (
-    <button onClick={toggleTheme} className='align-middle'>
+    <button
+      onClick={toggleTheme}
+      className='align-middle'
+      aria-label='Theme Switcher'
+    >
       {currentTheme === 'light' ? (
         <MoonIcon className='h-5 w-5 cursor-pointer hover:text-hover' />
       ) : (
