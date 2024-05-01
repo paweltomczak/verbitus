@@ -57,6 +57,7 @@ export default function Header({
           <div className='lg:hidden'>
             <button
               className='align-middle'
+              aria-label='Menu'
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? (

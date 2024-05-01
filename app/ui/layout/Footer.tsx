@@ -29,7 +29,7 @@ export const Footer = () => {
             </Link>
           </li>
           <li>
-            <Link href='javascript:void(0)' onClick={handleOnClick}>
+            <Link href='#' onClick={handleOnClick} className='cursor-pointer'>
               Do Not Sell or Share My Personal Information
             </Link>
           </li>
