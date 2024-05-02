@@ -1,5 +1,8 @@
 import { sql } from '@vercel/postgres';
-import { unstable_cache as cache } from 'next/cache';
+import {
+  unstable_cache as cache,
+  unstable_noStore as noStore,
+} from 'next/cache';
 import { Post } from './interfaces';
 
 const ITEMS_PER_PAGE = 5;
@@ -35,6 +38,8 @@ export const fetchPosts = cache(
 );
 
 export const fetchAllPostsForSitemap = async () => {
+  noStore();
+
   try {
     const { rows } = await sql`
       SELECT * FROM posts

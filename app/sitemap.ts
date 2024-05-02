@@ -45,9 +45,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   return [
-    { url: `${process.env.SITE_URL}/privacy` },
     ...postEntries,
     ...tagsEntries,
     ...catEntries,
+    { url: `${process.env.SITE_URL}/privacy` },
   ];
 }
