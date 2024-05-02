@@ -37,17 +37,29 @@ export const fetchPosts = cache(
   { tags: ['posts'], revalidate: false }
 );
 
-export const fetchAllPostsForSitemap = async () => {
+export const fetchAllForSitemap = async () => {
   noStore();
 
   try {
-    const { rows } = await sql`
-      SELECT * FROM posts
-      ORDER BY created_at DESC
-    `;
-    return rows;
+    const postsPromise =
+      await sql`SELECT id, title AS name, updated_at, 'post' AS type FROM posts ORDER BY created_at DESC`;
+    const tagsPromise =
+      await sql`SELECT id, name, 'tag' AS type FROM tags ORDER BY name ASC`;
+    const categoriesPromise =
+      await sql`SELECT id, name, 'category' AS type FROM categories ORDER BY name ASC`;
+
+    const [posts, tags, categories] = await Promise.all([
+      postsPromise,
+      tagsPromise,
+      categoriesPromise,
+    ]);
+    return [...posts.rows, ...tags.rows, ...categories.rows];
   } catch (error) {
-    throw new Error('Failed to fetch posts.');
+    console.error(
+      'Failed to fetch posts, tags, and categories for sitemap:',
+      error
+    );
+    throw new Error('Failed to fetch posts, tags, and categories.');
   }
 };
 
