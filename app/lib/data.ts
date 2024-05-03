@@ -3,7 +3,7 @@ import {
   unstable_cache as cache,
   unstable_noStore as noStore,
 } from 'next/cache';
-import { Post } from './interfaces';
+import { Post, TopPost } from './interfaces';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -94,6 +94,29 @@ export const fetchPostById = cache(
   { tags: ['postId'], revalidate: false }
 );
 
+export const fetchPostViewsAndLikes = cache(
+  async (id: string) => {
+    try {
+      const { rows } =
+        await sql`SELECT view_count, likes_count FROM posts WHERE id = ${id}`;
+      if (rows.length > 0) {
+        return {
+          viewCount: rows[0].view_count,
+          likesCount: rows[0].likes_count,
+        };
+      } else {
+        console.log('No post found with the given ID:', id);
+        return { viewCount: 0, likesCount: 0 };
+      }
+    } catch (error) {
+      console.log('Error fetching counts:', error);
+      throw error;
+    }
+  },
+  ['fetch-post-views'],
+  { tags: ['postViewsAndLikes'], revalidate: false }
+);
+
 export const fetchPostsByCategoryAndSearch = cache(
   async (category: string, searchQuery?: string) => {
     try {
@@ -170,6 +193,42 @@ export const fetchCategories = cache(
   { tags: ['categories'], revalidate: false }
 );
 
+export const fetchTopPosts = cache(
+  async (): Promise<{
+    viewed: TopPost[];
+    liked: TopPost[];
+  }> => {
+    noStore();
+
+    try {
+      const topViewed =
+        await sql`SELECT id, title, view_count, image_url FROM posts ORDER BY view_count DESC LIMIT 5;`;
+      const topLiked =
+        await sql`SELECT id, title, likes_count, image_url FROM posts ORDER BY likes_count DESC LIMIT 5;`;
+
+      return {
+        viewed: topViewed.rows.map((row) => ({
+          id: Number(row.id),
+          title: String(row.title),
+          image_url: String(row.image_url),
+          view_count: Number(row.view_count),
+        })),
+        liked: topLiked.rows.map((row) => ({
+          id: Number(row.id),
+          title: String(row.title),
+          image_url: String(row.image_url),
+          likes_count: Number(row.likes_count),
+        })),
+      };
+    } catch (error: any) {
+      console.log('Error fetching top posts:', error);
+      return { viewed: [], liked: [] };
+    }
+  },
+  ['fetch-top-posts'],
+  { tags: ['postViewsAndLikes'], revalidate: false }
+);
+
 const titleToSlug = (title: string) => {
   const uriSlug = title
     .toLowerCase()
@@ -179,7 +238,7 @@ const titleToSlug = (title: string) => {
   return encodeURI(uriSlug);
 };
 
-export const getPostSlug = (post: Post) => {
+export const getPostSlug = (post: Post | TopPost) => {
   return `${titleToSlug(post.title)}-${post.id}`;
 };
 

@@ -14,10 +14,19 @@ export type Post = {
   updated_at: string;
   tags: string[];
   category: string;
+  view_count: number;
 };
 
 export type Posts = {
   posts: Post[];
+};
+
+export type TopPost = {
+  id: number;
+  title: string;
+  image_url: string;
+  view_count?: number;
+  likes_count?: number;
 };
 
 export type Theme = 'dark' | 'light';

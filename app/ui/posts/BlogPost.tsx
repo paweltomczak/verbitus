@@ -58,7 +58,7 @@ export default function BlogPost({
                 alt={post.title}
                 width={550}
                 height={250}
-                className='max-h-[250px] rounded object-cover transition-transform duration-300 ease-in-out hover:scale-105'
+                className='max-h-[250px] h-auto rounded object-cover transition-transform duration-300 ease-in-out hover:scale-105'
               />
             </Link>
           </div>

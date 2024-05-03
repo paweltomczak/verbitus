@@ -415,3 +415,34 @@ export async function deleteCategory(categoryId: number) {
     };
   }
 }
+
+export const viewsIncrement = async (postId: string) => {
+  try {
+    await sql`UPDATE posts SET view_count = view_count + 1 WHERE id = ${postId} RETURNING view_count`;
+    revalidateTag('postViewsAndLikes');
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const toggleLikesCount = async (
+  postId: string,
+  shouldIncrement: boolean
+) => {
+  try {
+    const incrementValue = shouldIncrement ? 1 : -1;
+
+    const { rows } = await sql`
+      UPDATE posts
+      SET likes_count = likes_count + ${incrementValue}
+      WHERE id = ${postId}
+      RETURNING likes_count
+    `;
+
+    revalidateTag('postViewsAndLikes');
+
+    return rows[0].likes_count;
+  } catch (error) {
+    console.log(error);
+  }
+};
