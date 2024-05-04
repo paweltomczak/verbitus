@@ -213,6 +213,7 @@ export async function updatePost(
     await sql.query(query, parameters);
 
     revalidateTag('postId');
+    revalidateTag('posts');
     revalidatePath('/dashboard/posts');
 
     return {
