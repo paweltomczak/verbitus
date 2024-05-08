@@ -27,7 +27,7 @@ export const Pagination = ({ totalPages }: { totalPages: number }) => {
       />
 
       <p>
-        Page {currentPage} of {totalPages}
+        Page {currentPage} of {totalPages === 0 ? 1 : totalPages}
       </p>
 
       <PaginationArrow

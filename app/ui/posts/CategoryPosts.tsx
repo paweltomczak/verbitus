@@ -7,15 +7,18 @@ import { urlToString } from '@/app/lib/utils';
 export const CategoryPosts = async ({
   query,
   category,
+  currentPage,
 }: {
   query: string;
   category: string;
+  currentPage: number;
 }) => {
   const catString = urlToString(category);
 
   const posts = (await fetchPostsByCategoryAndSearch(
     catString,
-    query
+    query,
+    currentPage
   )) as Post[];
 
   if (posts.length === 0) {

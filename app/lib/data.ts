@@ -6,6 +6,7 @@ import {
 import { Post, TopPost } from './interfaces';
 
 const ITEMS_PER_PAGE = 5;
+const CAT_ITEMS_PER_PAGE = 4;
 
 export const fetchPosts = cache(
   async (query?: string, currentPage?: number) => {
@@ -80,6 +81,27 @@ export const fetchPostsPages = cache(
   { tags: ['posts'], revalidate: false }
 );
 
+export const fetchCatPostsPages = cache(
+  async (query: string, category: string) => {
+    try {
+      const { rows } = await sql`
+        SELECT COUNT(*) FROM posts
+        WHERE (title ILIKE ${'%' + query + '%'} OR content ILIKE ${
+        '%' + query + '%'
+      })
+        AND category = ${category}
+      `;
+
+      const totalPages = Math.ceil(Number(rows[0].count) / CAT_ITEMS_PER_PAGE);
+      return totalPages;
+    } catch (error) {
+      throw new Error('Failed to fetch posts.');
+    }
+  },
+  ['fetch-cat-posts-pages'],
+  { tags: ['posts'], revalidate: false }
+);
+
 export const fetchPostById = cache(
   async (id: string) => {
     try {
@@ -118,11 +140,15 @@ export const fetchPostViewsAndLikes = cache(
 );
 
 export const fetchPostsByCategoryAndSearch = cache(
-  async (category: string, searchQuery?: string) => {
+  async (category: string, searchQuery?: string, currentPage?: number) => {
+    const offset = currentPage && (currentPage - 1) * CAT_ITEMS_PER_PAGE;
     try {
       const searchPattern = `%${searchQuery}%`;
-      const { rows } =
-        await sql`SELECT * FROM posts WHERE category = ${category} AND (title LIKE ${searchPattern} OR content LIKE ${searchPattern}) ORDER BY created_at DESC`;
+      const { rows } = await sql`SELECT * FROM posts
+        WHERE category = ${category}
+        AND (title LIKE ${searchPattern} OR content LIKE ${searchPattern})
+        ORDER BY created_at DESC
+        LIMIT ${CAT_ITEMS_PER_PAGE} OFFSET ${offset}`;
       return rows;
     } catch (error) {
       throw new Error(
