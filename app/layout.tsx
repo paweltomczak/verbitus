@@ -16,19 +16,6 @@ export const metadata: Metadata = {
   keywords: [
     'finance, insurance, cryptocurrency, personal finance, technology, digital marketing, online learning, blogging, web development, real estate, travel, automotive, earn money online',
   ],
-  robots: {
-    index: false,
-    follow: true,
-    nocache: true,
-    googleBot: {
-      index: true,
-      follow: false,
-      noimageindex: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
 };
 
 export default async function RootLayout({
