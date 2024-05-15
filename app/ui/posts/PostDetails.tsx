@@ -3,8 +3,8 @@ import {
   fetchPostViewsAndLikes,
   getIdFromSlug,
 } from '@/app/lib/data';
-import { stringToURL } from '@/app/lib/utils';
-import { CalendarDaysIcon } from '@heroicons/react/24/outline';
+import { readingTime, stringToURL } from '@/app/lib/utils';
+import { CalendarDaysIcon, BookOpenIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -21,15 +21,22 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
   try {
     const post = await fetchPostById(id);
     const postViewsAndLikes = await fetchPostViewsAndLikes(id);
+    const minutesRead = readingTime(post.content);
 
     return (
       <div className='w-full'>
         <h1 className='md:leading-tight tracking-tighter md:max-w-3xl md:mx-auto text-3xl md:text-5xl text-center font-bold m-10'>
           {post.title}
         </h1>
-        <span className='flex items-center justify-center text-sm gap-2 font-light text-gray-400 pb-8'>
-          <CalendarDaysIcon className='w-5 h-5 -mt-[2px]' />
-          {new Date(post.created_at).toLocaleDateString()}
+        <span className='flex justify-between max-w-3xl lg:px-0 px-6 mx-auto text-sm font-light text-gray-400 pb-8'>
+          <div className='flex gap-2 items-center'>
+            <CalendarDaysIcon className='w-5 h-5 -mt-[2px]' />
+            {new Date(post.created_at).toLocaleDateString()}
+          </div>
+          <div className='flex gap-2 items-center'>
+            <BookOpenIcon className='w-5 h-5' />
+            {minutesRead} {minutesRead === 1 ? 'minute' : 'minutes'} read
+          </div>
         </span>
         <div className='relative max-w-3xl m-auto h-[200px] md:h-[400px]'>
           <Image

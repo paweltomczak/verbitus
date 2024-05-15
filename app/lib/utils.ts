@@ -26,3 +26,11 @@ export const urlToString = (url: string) => {
 export const setThemeCookie = (theme: Theme) => {
   document.cookie = `theme=${theme}; path=/; max-age=31536000; samesite=lax`;
 };
+
+export const readingTime = (text: string) => {
+  const wordsPerMin = 200;
+  const words = text.trim().split(/\s+/).length;
+  const minutes = Math.ceil(words / wordsPerMin);
+
+  return minutes;
+};
