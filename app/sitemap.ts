@@ -1,10 +1,10 @@
 import { MetadataRoute } from 'next';
-import { fetchAllForSitemap, getPostSlug } from './lib/data';
+import { fetchAll, getPostSlug } from './lib/data';
 import { stringToURL } from './lib/utils';
 import { Post } from './lib/interfaces';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const entries = await fetchAllForSitemap();
+  const entries = await fetchAll();
 
   const sitemapEntries = await Promise.all(
     entries.map(async (entry) => {

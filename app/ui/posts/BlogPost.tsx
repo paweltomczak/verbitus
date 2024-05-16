@@ -28,7 +28,7 @@ export default function BlogPost({
                 alt={post.title}
                 width={600}
                 height={350}
-                className='rounded object-cover transition-transform duration-300 ease-in-out hover:scale-105'
+                className='max-h-[300px] rounded object-cover transition-transform duration-300 ease-in-out hover:scale-105'
                 priority
               />
             </Link>

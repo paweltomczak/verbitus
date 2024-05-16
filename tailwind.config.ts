@@ -14,6 +14,7 @@ const config: Config = {
         hover: '#5A96E3',
         skeleton: '#ECE9E4',
         darkSkeleton: '#2F3640',
+        aiButton: '#6f42c1',
       },
       borderWidth: {
         6: '6px',

@@ -38,7 +38,7 @@ export const fetchPosts = cache(
   { tags: ['posts'], revalidate: false }
 );
 
-export const fetchAllForSitemap = async () => {
+export const fetchAll = async () => {
   noStore();
 
   try {

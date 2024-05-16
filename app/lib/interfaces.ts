@@ -29,4 +29,10 @@ export type TopPost = {
   likes_count?: number;
 };
 
+export type DataForAI = {
+  titles: string[];
+  tags: string[];
+  categories: string[];
+};
+
 export type Theme = 'dark' | 'light';

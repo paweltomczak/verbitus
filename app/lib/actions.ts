@@ -13,6 +13,8 @@ import {
   deleteObject,
 } from 'firebase/storage';
 import { storage } from './firebase';
+import { openai } from './openAI';
+import { DataForAI } from './interfaces';
 
 export async function SignUpUser(
   state: { message: any; type: string } | undefined,
@@ -445,5 +447,53 @@ export const toggleLikesCount = async (
     return rows[0].likes_count;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const generateAIpost = async (dataForAI: DataForAI) => {
+  const prompt = `
+  Create a unique, detailed blog post with the following structure:
+  {
+    "title": "Post title",
+    "content": "Blog post content",
+    "tags": ["tag1", "tag2"],
+    "category": "Post category"
+  }
+  Requirements:
+  Unique article different from: ${dataForAI.titles}
+  Pick up to 5 tags from: ${dataForAI.tags}
+  Use one of these categories: ${dataForAI.categories}
+  SEO friendly with high CPC Google Adsense keywords wrapped in <strong> tags
+  HTML structured content (<p> for paragraphs, <h2> for headings)
+  Title as a string only
+  Each heading in <p><br></p><h2>Header</h2><p><br></p>, first paragraph without heading
+  Comprehensive and engaging with the longest content possible
+  `;
+
+  try {
+    const chatCompletion = await openai.chat.completions.create({
+      messages: [
+        {
+          role: 'system',
+          content: prompt,
+        },
+      ],
+      model: 'gpt-3.5-turbo',
+    });
+    const messageContent = chatCompletion.choices[0].message.content;
+    if (messageContent) {
+      return {
+        message: 'AI generated Post created',
+        type: 'success',
+        content: JSON.parse(messageContent),
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      message: 'Something went wrong. Try again.',
+      type: 'error',
+      content: null,
+    };
   }
 };
