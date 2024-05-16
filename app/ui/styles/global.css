@@ -12,9 +12,16 @@ strong {
   font-weight: 900;
 }
 
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
 h2,
 h3 {
-  font-size: 2rem;
   line-height: 2.5rem;
   letter-spacing: -0.07rem;
 }
