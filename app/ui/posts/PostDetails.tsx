@@ -11,6 +11,7 @@ import { notFound } from 'next/navigation';
 import { TwitterShareButton } from './TwitterShareButton';
 import { FacebookShareButton } from './FacebookShareButton';
 import { ViewsAndLikes } from './ViewsAndLikes';
+import { Comments } from './Comments';
 
 export const PostDetails = async ({ slug }: { slug: string }) => {
   const id = getIdFromSlug(slug);
@@ -72,6 +73,7 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
             <TwitterShareButton hashtags={post.tags} />
             <FacebookShareButton siteURL={siteURL} />
           </div>
+          <Comments postId={id} />
         </div>
       </div>
     );

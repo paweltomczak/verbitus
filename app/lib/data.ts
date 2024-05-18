@@ -255,6 +255,22 @@ export const fetchTopPosts = cache(
   { tags: ['postViewsAndLikes'], revalidate: false }
 );
 
+export const fetchCommentsByPostId = cache(
+  async (postId: string) => {
+    try {
+      const { rows } = await sql`
+        SELECT * FROM comments WHERE post_id = ${postId} ORDER BY date DESC;
+      `;
+
+      return rows;
+    } catch (error) {
+      throw new Error('Failed to fetch comments.');
+    }
+  },
+  ['fetch-comments-by-post-id'],
+  { tags: ['comments'], revalidate: false }
+);
+
 const titleToSlug = (title: string) => {
   const uriSlug = title
     .toLowerCase()

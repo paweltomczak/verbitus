@@ -36,3 +36,13 @@ export type DataForAI = {
 };
 
 export type Theme = 'dark' | 'light';
+
+export type Comment = {
+  text: string;
+  name: string;
+  date: string;
+};
+
+export type State = {
+  message: string;
+};

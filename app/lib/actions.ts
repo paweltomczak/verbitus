@@ -14,7 +14,7 @@ import {
 } from 'firebase/storage';
 import { storage } from './firebase';
 import { openai } from './openAI';
-import { DataForAI } from './interfaces';
+import { DataForAI, State } from './interfaces';
 
 export async function SignUpUser(
   state: { message: any; type: string } | undefined,
@@ -497,3 +497,40 @@ export const generateAIpost = async (dataForAI: DataForAI) => {
     };
   }
 };
+
+export async function addCommentToPost(
+  postId: string,
+  prevState: State,
+  formData: FormData
+) {
+  const name = formData.get('name') as string;
+  const comment = formData.get('comment') as string;
+
+  if (!name || !comment) {
+    return {
+      message: 'Please fill in all fields',
+      type: 'error',
+    };
+  }
+
+  try {
+    const query = `INSERT INTO comments (post_id, name, comment, date) VALUES ($1, $2, $3, $4) RETURNING *;`;
+    const parameters = [postId, name, comment, new Date().toISOString()];
+
+    await sql.query(query, parameters);
+
+    revalidateTag('comments');
+
+    return {
+      message: 'Comment added successfully',
+      type: 'success',
+      resetKey: Date.now().toString(),
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      message: 'Failed to add comment. Please try again.',
+      type: 'error',
+    };
+  }
+}
