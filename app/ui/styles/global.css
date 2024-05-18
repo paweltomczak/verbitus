@@ -56,3 +56,21 @@ h3 {
     rgba(34, 40, 49, 0) 100%
   );
 }
+
+.content ol,
+.content ul {
+  list-style: auto;
+  margin: 0 1rem;
+}
+
+.content li {
+  padding: 0.4rem;
+}
+
+.content a {
+  text-decoration: underline;
+}
+
+.content a:hover {
+  text-decoration: none;
+}

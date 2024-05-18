@@ -49,7 +49,7 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
         </div>
         <div className='max-w-3xl mx-auto lg:px-0 px-6 text-left my-6 font-light'>
           <div
-            className='leading-relaxed'
+            className='leading-relaxed content'
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
           <ViewsAndLikes
