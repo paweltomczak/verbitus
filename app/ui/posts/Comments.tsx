@@ -5,7 +5,7 @@ export const Comments = async ({ postId }: { postId: string }) => {
   const comments = await fetchCommentsByPostId(postId);
 
   return (
-    <div className='max-w-3xl mx-auto py-2'>
+    <section className='max-w-3xl mx-auto py-2'>
       <h2 className='text-xl font-bold mb-6'>Leave a Comment:</h2>
       <CommentForm postId={postId} />
       {comments.length === 0 ? (
@@ -26,6 +26,6 @@ export const Comments = async ({ postId }: { postId: string }) => {
           ))}
         </ul>
       )}
-    </div>
+    </section>
   );
 };

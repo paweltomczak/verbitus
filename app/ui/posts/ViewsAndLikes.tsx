@@ -36,7 +36,7 @@ export const ViewsAndLikes = ({
   const filledHeartClasses = `fill-red-600 border-red-500 text-red-500`;
 
   return (
-    <div className='flex justify-evenly mt-10 py-5 bg-primary dark:bg-darkSkeleton text-body items-center rounded-lg'>
+    <section className='flex justify-evenly mt-10 py-5 bg-primary dark:bg-darkSkeleton text-body items-center rounded-lg'>
       <div className='flex gap-2 items-center'>
         <EyeIcon className='w-6 h-6' />
         <span>
@@ -53,6 +53,6 @@ export const ViewsAndLikes = ({
           onClick={toggleLikes}
         />
       </div>
-    </div>
+    </section>
   );
 };

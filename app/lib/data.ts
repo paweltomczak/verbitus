@@ -271,6 +271,27 @@ export const fetchCommentsByPostId = cache(
   { tags: ['comments'], revalidate: false }
 );
 
+export const fetchRelatedPosts = cache(
+  async (postId: string, category: string) => {
+    try {
+      const { rows } = await sql`
+        SELECT id, title, image_url, category
+        FROM posts
+        WHERE id != ${postId}
+        AND category = ${category}
+        ORDER BY RANDOM()
+        LIMIT 2
+      `;
+
+      return rows;
+    } catch (error) {
+      throw new Error(`Failed to fetch related posts.`);
+    }
+  },
+  ['fetch-related-posts'],
+  { tags: ['related-posts'], revalidate: false }
+);
+
 const titleToSlug = (title: string) => {
   const uriSlug = title
     .toLowerCase()

@@ -8,12 +8,14 @@ export default function BlogPost({
   post,
   isFeatured = false,
   query,
+  isRelated,
 }: {
   post: Post;
   isFeatured?: boolean;
   query: string;
+  isRelated?: boolean;
 }) {
-  const firstParagraph = extractFirstParagraph(post.content);
+  const firstParagraph = !isRelated && extractFirstParagraph(post.content);
 
   const correctSlug = getPostSlug(post);
 
@@ -49,7 +51,7 @@ export default function BlogPost({
     );
   } else {
     return (
-      <div className='w-full md:w-1/2 mb-8 px-4'>
+      <div className={`${isRelated ? 'px-0' : 'px-4'} w-full md:w-1/2 mb-8`}>
         <div className='flex flex-col items-center'>
           <div className='relative w-full overflow-hidden'>
             <Link href={`/post/${correctSlug}`}>
@@ -58,7 +60,9 @@ export default function BlogPost({
                 alt={post.title}
                 width={550}
                 height={250}
-                className='max-h-[250px] h-auto rounded object-cover transition-transform duration-300 ease-in-out hover:scale-105'
+                className={`${
+                  isRelated ? 'max-h-[200px]' : 'max-h-[250px]'
+                }  h-auto rounded object-cover transition-transform duration-300 ease-in-out hover:scale-105`}
               />
             </Link>
           </div>
@@ -71,7 +75,7 @@ export default function BlogPost({
                 {post.title}
               </h2>
             </Link>
-            <p className='font-light'>{firstParagraph}</p>
+            <p className='font-light'>{!isRelated && firstParagraph}</p>
           </div>
         </div>
       </div>

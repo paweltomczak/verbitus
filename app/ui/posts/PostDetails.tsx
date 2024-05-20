@@ -12,6 +12,7 @@ import { TwitterShareButton } from './TwitterShareButton';
 import { FacebookShareButton } from './FacebookShareButton';
 import { ViewsAndLikes } from './ViewsAndLikes';
 import { Comments } from './Comments';
+import { RelatedPosts } from './RelatedPosts';
 
 export const PostDetails = async ({ slug }: { slug: string }) => {
   const id = getIdFromSlug(slug);
@@ -73,6 +74,7 @@ export const PostDetails = async ({ slug }: { slug: string }) => {
             <TwitterShareButton hashtags={post.tags} />
             <FacebookShareButton siteURL={siteURL} />
           </div>
+          <RelatedPosts id={id} category={post.category} />
           <Comments postId={id} />
         </div>
       </div>
