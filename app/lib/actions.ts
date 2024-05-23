@@ -15,6 +15,7 @@ import {
 import { storage } from './firebase';
 import { openai } from './openAI';
 import { DataForAI, State } from './interfaces';
+import { sanitizeInput } from './sanitize';
 
 export async function SignUpUser(
   state: { message: any; type: string } | undefined,
@@ -513,9 +514,24 @@ export async function addCommentToPost(
     };
   }
 
+  const sanitizedName = sanitizeInput(name);
+  const sanitizedComment = sanitizeInput(comment);
+
+  if (!sanitizedName || !sanitizedComment) {
+    return {
+      message: 'Invalid comment!',
+      type: 'error',
+    };
+  }
+
   try {
     const query = `INSERT INTO comments (post_id, name, comment, date) VALUES ($1, $2, $3, $4) RETURNING *;`;
-    const parameters = [postId, name, comment, new Date().toISOString()];
+    const parameters = [
+      postId,
+      sanitizedName,
+      sanitizedComment,
+      new Date().toISOString(),
+    ];
 
     await sql.query(query, parameters);
 
